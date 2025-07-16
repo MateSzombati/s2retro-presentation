@@ -1,0 +1,14 @@
+FROM mcr.microsoft.com/playwright:v1.54.0-noble
+WORKDIR /app
+
+ARG CONFIGURATION=production
+
+COPY package.json package-lock.json ./
+
+RUN npm ci --include=dev
+
+COPY . .
+
+RUN npm run build -- --configuration=$CONFIGURATION
+
+CMD ["npm", "run", "e2e"]

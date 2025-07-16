@@ -1,0 +1,77 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# IDEs / Editors - Visual Studio, VS Code, JetBrains (Rider, WebStorm), Resharper
+.vs/
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.sln.iml
+*.userprefs
+_ReSharper*/
+*.DotSettings.user
+
+# .NET / ASP.NET Core
+**/bin/
+**/obj/
+**/out/
+*.pfx
+*.key
+*.pem
+*.cer
+*.cert
+
+# Node.js / JavaScript / TypeScript
+node_modules/
+npm-debug.log*
+yarn-error.log*
+*.tsbuildinfo
+
+# Angular
+dist/
+tmp/
+.angular/
+e2e/*.js
+e2e/*.js.map
+
+# NuGet
+*.nupkg
+.nuget/
+packages/
+
+# Testing / Test Reports - NUnit, Playwright, Cucumber
+TestResults/
+*.trx
+coverage/
+coverage.cobertura.xml
+*.coverage
+playwright-report/
+cucumber-reports/
+test-results/
+nunit-*.xml
+
+# Environment / Secrets
+.env
+.env*
+secrets.json
+
+# Logs / Temp Files
+*.log
+logs/
+**/Logs/
+temp/
+*.tmp
+*.bak
+*.swp
+*.old
+*.orig
+
+# Git
+.git/
+
+# Docker
+.dockerignore

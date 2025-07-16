@@ -1,0 +1,76 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# IDEs / Editors - Visual Studio, VS Code, JetBrains (Rider, WebStorm), Resharper
+.vs/
+.vscode/
+.idea/
+*.suo
+*.user
+*.sln.iml
+_ReSharper*/
+*.DotSettings.user
+
+# .NET / ASP.NET Core
+bin/
+obj/
+out/
+[Dd]ebug/
+[Rr]elease/
+*.pdb
+*.dll
+*.exe
+*.tmp
+*.log
+logs/
+temp/
+project.lock.json
+*.pubxml
+*.publishproj
+*.pfx
+*.key
+appsettings.*.json
+!appsettings.json
+wwwroot/dist/
+publish/
+artifacts/
+
+# Node.js / JavaScript / TypeScript
+node_modules/
+npm-debug.log*
+yarn-error.log*
+*.tsbuildinfo
+
+# Angular
+dist/
+tmp/
+.angular/
+e2e/*.js
+e2e/*.js.map
+
+# NuGet
+packages/
+*.nupkg
+.nuget/
+
+# Testing / Test Reports - NUnit, Playwright, Cucumber
+TestResults/
+*.trx
+*.coverage
+coverage/
+playwright-report/
+test-results/
+cucumber-reports/
+nunit-*.xml
+
+# Environment / Secrets
+.env
+.env.*
+secrets.json
+
+# Databases
+*.mdf
+*.ldf
+*.sqlite
+*.db

@@ -1,0 +1,22 @@
+services:
+  backend_tests:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.test
+    container_name: s2retro_backend_tests
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - s2retro-network
+
+  frontend_tests:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.test
+    container_name: s2retro_frontend_tests
+    depends_on:
+      frontend:
+        condition: service_healthy
+    networks:
+      - s2retro-network

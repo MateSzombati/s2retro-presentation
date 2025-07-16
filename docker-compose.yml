@@ -1,0 +1,64 @@
+services:
+  database:
+    image: mysql:8.4
+    container_name: s2retro_database
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+      MYSQL_DATABASE: "${MYSQL_DATABASE}"
+    ports:
+      - "${MYSQL_EXTERNAL_PORT}:${MYSQL_INTERNAL_PORT}"
+    volumes:
+      - data:/var/lib/mysql
+    networks:
+      - s2retro-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    container_name: s2retro_backend
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      ASPNETCORE_URLS: http://+:${BACKEND_INTERNAL_HTTP_PORT}
+      
+      API_KEY: "${API_KEY}"
+      ConnectionStrings__DefaultConnection: "Server=${DATABASE_HOSTNAME};Port=${MYSQL_INTERNAL_PORT};Database=${MYSQL_DATABASE};User=${MYSQL_USER};Password=${MYSQL_PASSWORD};"
+    ports:
+      - "${BACKEND_EXTERNAL_HTTP_PORT}:${BACKEND_INTERNAL_HTTP_PORT}"
+    networks:
+      - s2retro-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${BACKEND_INTERNAL_HTTP_PORT}/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: s2retro_frontend
+    ports:
+      - "${FRONTEND_EXTERNAL_HTTP_PORT}:${FRONTEND_INTERNAL_HTTP_PORT}"
+    networks:
+      - s2retro-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${FRONTEND_INTERNAL_HTTP_PORT}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  data:
+
+networks:
+  s2retro-network:
+    driver: bridge

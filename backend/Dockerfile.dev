@@ -1,0 +1,23 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine
+WORKDIR /app
+
+ENV ASPNETCORE_ENVIRONMENT=Development \
+    ASPNETCORE_URLS=http://+:8080 \
+    DOTNET_RUNNING_IN_CONTAINER=true
+
+EXPOSE 8080
+
+RUN apk add --no-cache curl
+
+COPY S2Retro.sln ./
+COPY src/Api/S2Retro.Api.csproj ./src/Api/
+COPY src/Infrastructure/S2Retro.Infrastructure.csproj ./src/Infrastructure/
+COPY tests/S2Retro.UnitTests/S2Retro.UnitTests.csproj ./tests/S2Retro.UnitTests/
+COPY tests/S2Retro.IntegrationTests/S2Retro.IntegrationTests.csproj ./tests/S2Retro.IntegrationTests/
+COPY src/Modules/ ./src/Modules/
+
+RUN dotnet restore
+
+COPY . .
+
+CMD ["dotnet", "run", "--project", "src/Api/S2Retro.Api.csproj"]
