@@ -1,0 +1,34 @@
+.number-input{
+    background-color: transparent;
+    box-sizing: border-box;
+    // border: none;
+    outline: none; 
+    color: white;
+    font-size: 14px;
+    font-weight: 400;
+    font-family: Inter;
+    // padding: 3px 12px;
+    border-radius: 12px;
+    width: 100%;
+    min-height: 70px;
+    border: none;
+    align-content: center;
+    resize: none;
+    overflow: hidden;
+    white-space: pre-wrap;
+    line-height: 1.4;
+    padding: 5px 15px;
+    margin-bottom: -3px;
+}
+.number-input:hover{
+    background-color: #242424;
+}
+.number-input:focus{
+    background-color: #242424;
+}
+.number-input::placeholder{
+    font-weight: 400;
+    font-size: 14px;
+    text-align: center;
+    color: white;
+}

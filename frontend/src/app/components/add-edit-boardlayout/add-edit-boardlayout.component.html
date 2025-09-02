@@ -1,0 +1,48 @@
+<div [ngStyle]="{ transform: 'scale(' + scale + ')', 'transform-origin': 'top left' }" class="add-edit-container">
+
+    
+
+    <div class="main-container">
+        <table class="table-container">
+        <thead>
+            <tr class="table-head" cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="dropColumn($event)" >
+                <th *ngFor="let col of table_layout.columns; let i = index" cdkDrag [cdkDragDisabled]="isDragDisabled" class="resizable-box" [ngStyle]="{ width: col.width + 'px' }" >
+                <div class="resizer" (mousedown)="startResize($event, i)" (mouseenter)="disableDrag()" (mouseleave)="enableDrag()" ></div>
+
+                <div class="table-header-col">
+                    <input class="table-header-input" placeholder="Spaltenname" type="text" [(ngModel)]="col.column_title" (focus)="selectAllText($event)"/>
+                    <app-type-select style="left: 10px; top: 41px; position: absolute;" [(ngModel)]="col.type"></app-type-select>
+                </div>
+                </th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr class="table-row">
+                <td *ngFor="let col of table_layout.columns" class="table-body-col" [ngStyle]="{ width: col.width + 'px' }">
+                    <!-- example {{ col.column_title }} -->
+                    
+                    <ng-container [ngSwitch]="col.type">
+                        <app-freetext *ngSwitchCase="'Freitext'"></app-freetext>
+                        <app-number *ngSwitchCase="'Zahl'"></app-number>
+                        <app-date *ngSwitchCase="'Datum'"></app-date>
+                        <app-mood *ngSwitchCase="'MoodSelect'"></app-mood>
+                    </ng-container>
+
+                </td>
+            </tr>
+            
+        </tbody>
+        </table>
+    </div>
+
+
+
+    <!-- <button class="add-column-button" (click)="addColumn()">Add Column</button>
+
+    <select class="type-select" id="type"  [(ngModel)]="selectedType" (change)="onTypeChange()">
+        <option *ngFor="let type of types" [value]="type">{{ type }}</option>
+    </select> -->
+
+</div>
