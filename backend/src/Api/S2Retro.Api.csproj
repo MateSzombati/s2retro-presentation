@@ -10,4 +10,13 @@
     <Folder Include="Properties\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Infrastructure\S2Retro.Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules\RetroBoardLayout\S2Retro.Modules.RetroBoardLayout.csproj" />
+  </ItemGroup>
+
 </Project>
