@@ -10,14 +10,17 @@ using S2Retro.Modules.RetroBoardValue.Application.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var configuration = builder.Configuration;
+var connectionString =
+    builder.Configuration.GetConnectionString("DefaultConnection")
+        ?? throw new InvalidOperationException("Connection string"
+        + "'DefaultConnection' not found.");
 
 builder.Services.AddDbContext<S2RetroDbContext>(options =>
     options.UseMySql(
-        configuration.GetConnectionString("DefaultConnection"),
-        ServerVersion.AutoDetect(configuration.GetConnectionString("DefaultConnection"))
-    )
-);
+        connectionString,
+        new MySqlServerVersion(new Version(8, 4, 0))
+        )
+    );
 
 builder.Services.AddAutoMapper(cfg => cfg.AddProfile<LayoutMappingProfile>());
 builder.Services.AddAutoMapper(cfg => cfg.AddProfile<ColumnMappingProfile>());
