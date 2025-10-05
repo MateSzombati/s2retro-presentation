@@ -1,11 +1,12 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MsalService } from '@azure/msal-angular';
 import { BoardDialogComponent, BoardData } from '../board-dialog/board-dialog.component';
-import { interval, switchMap, catchError, of, firstValueFrom } from 'rxjs';   // ✅ Statt toPromise() Angular 20x standart
+import { interval, switchMap, catchError, of, firstValueFrom, Subject, takeUntil } from 'rxjs';
+import { UserInfoService } from '../../services/user-info.service';
 
 // ==== Models / Types ====
 interface Board {
@@ -50,8 +51,10 @@ type GraphChat = {
   templateUrl: './restricted-page.component.html',
   styleUrls: ['./restricted-page.component.css'],
 })
-export class RestrictedPageComponent implements OnInit {
+export class RestrictedPageComponent implements OnInit, OnDestroy {
   private http = inject(HttpClient);
+  private userInfoService = inject(UserInfoService);
+  private readonly _destroying$ = new Subject<void>();
 
   constructor(
     private msal: MsalService,
@@ -60,10 +63,11 @@ export class RestrictedPageComponent implements OnInit {
   ) {}
 
   // === State ===
+  userName: string = 'User';
   boards: Board[] = [
-    { name: 'Board 1', status: 'Abgeschlossen' },
-    { name: 'Board 2', status: 'Meetingphase' },
-    { name: 'Board 3', status: 'Eintragshase' },
+    { name: 'Board 1', status: 'Completed' },
+    { name: 'Board 2', status: 'Meeting Phase' },
+    { name: 'Board 3', status: 'Entry Phase' },
   ];
 
   meetings: GraphEvent[] = [];
@@ -76,15 +80,33 @@ export class RestrictedPageComponent implements OnInit {
   loadingNotifications = false;
 
   // === Lifecycle ===
-  async ngOnInit(): Promise<void> {
+  ngOnInit(): void {
+    this.subscribeToUserInfo();
+
     this.ensureActiveAccount();
-    await Promise.all([
+    Promise.all([
       this.loadUpcomingMeetings(),
-      //this.loadNotifications(),
       this.loadRecentContacts(),
     ]);
 
     this.startNotificationsPolling();
+  }
+
+  ngOnDestroy(): void {
+    this._destroying$.next(undefined);
+    this._destroying$.complete();
+  }
+
+  private subscribeToUserInfo(): void {
+    this.userInfoService.currentUserInfo$
+      .pipe(takeUntil(this._destroying$))
+      .subscribe(userClaims => {
+        if (userClaims && userClaims.claims) {
+          const nameClaim = userClaims.claims.find(c => c.type === 'name');
+          console.log(nameClaim);
+          this.userName = nameClaim?.value ?? 'unknown';
+        }
+      });
   }
 
   // === Auth Helpers ===
@@ -95,21 +117,6 @@ export class RestrictedPageComponent implements OnInit {
         this.msal.instance.setActiveAccount(accounts[0]);
       }
     }
-  }
-
-  get userName(): string {
-    return (
-      this.msal.instance.getActiveAccount()?.name ??
-      this.msal.instance.getAllAccounts()[0]?.name ??
-      'unbekannt'
-    );
-  }
-
-  logout(): void {
-    this.msal.logoutPopup().subscribe({
-      next: () => this.router.navigate(['./login-page']),
-      error: (err) => console.error('Logout-Fehler', err),
-    });
   }
 
   // === Board Management ===
@@ -127,7 +134,7 @@ export class RestrictedPageComponent implements OnInit {
   }
 
   get openBoards(): number {
-    return this.boards.filter((b) => b.status !== 'Abgeschlossen').length;
+    return this.boards.filter((b) => b.status !== 'Completed').length;
   }
 
   // === Graph API: Meetings ===
@@ -169,7 +176,7 @@ export class RestrictedPageComponent implements OnInit {
         (ev) => this.toYMD(new Date(ev.start.dateTime), 'Europe/Vienna') === todayYMD
       ).length;
     } catch (err) {
-      console.error('Meetings laden fehlgeschlagen', err);
+      console.error('Failed to load meetings', err);
     } finally {
       this.loadingMeetings = false;
     }
@@ -212,7 +219,7 @@ export class RestrictedPageComponent implements OnInit {
       );
       this.notifications = res?.value ?? [];
     } catch (err) {
-      console.error('Notifications laden fehlgeschlagen', err);
+      console.error('Failed to load notifications', err);
     } finally {
       this.loadingNotifications = false;
     }
@@ -241,7 +248,7 @@ export class RestrictedPageComponent implements OnInit {
         switchMap(() =>
           this.http.get<{ value: GraphChat[] }>(url, { headers }).pipe(
             catchError(err => {
-              console.error('Fehler beim Laden der Notifications', err);
+              console.error('Error loading notifications', err);
               return of({ value: [] as GraphChat[] });
             })
           )
@@ -254,7 +261,7 @@ export class RestrictedPageComponent implements OnInit {
       });
 
     }).catch(err => {
-      console.error('Token konnte nicht abgerufen werden', err);
+      console.error('Could not retrieve token', err);
     });
   }
 
@@ -302,12 +309,12 @@ export class RestrictedPageComponent implements OnInit {
             );
             return { ...u, photoUrl: URL.createObjectURL(blob!) };
           } catch {
-            return u; // Fallback ohne Foto
+            return u; // Fallback without photo
           }
         })
       );
     } catch (err) {
-      console.error('Kontakte laden fehlgeschlagen', err);
+      console.error('Failed to load contacts', err);
     }
   }
 }

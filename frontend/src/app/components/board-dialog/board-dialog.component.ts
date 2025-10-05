@@ -13,7 +13,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MsalService } from '@azure/msal-angular';
 import { firstValueFrom } from 'rxjs'; // ersetzt toPromise()
 
-// Datenschnittstelle für die Dialogeingabe
+// Data interface for the dialog input
 export interface BoardData {
   name: string;
   status: string;
@@ -34,7 +34,7 @@ export interface BoardData {
     MatDatepickerModule
   ],
   templateUrl: './board-dialog.component.html',
-  styleUrls: ['./board-dialog.component.css'], // FIX: Angular erwartet "styleUrls" (Plural)
+  styleUrls: ['./board-dialog.component.css'], // FIX: Angular expects "styleUrls" (plural)
   providers: [
     provideNativeDateAdapter(),
     { provide: MAT_DATE_LOCALE, useValue: 'de-DE' }
@@ -58,16 +58,16 @@ export class BoardDialogComponent {
   ) {}
 
   /**
-   * Sucht nach Benutzern im Microsoft Graph anhand der Eingabe
+   * Searches for users in Microsoft Graph based on the input
    */
   async searchUser(): Promise<any> {
     const account = this.msalService.instance.getActiveAccount();
 
     if (!account) {
-      throw new Error('Kein aktiver Account gesetzt – bitte erst einloggen.');
+      throw new Error('No active account set - please log in first.');
     }
 
-    // Token für Graph API abrufen
+    // Get token for Graph API
     const token = await this.msalService.instance.acquireTokenSilent({
       scopes: ['User.ReadBasic.All'],
       account
@@ -77,7 +77,7 @@ export class BoardDialogComponent {
       Authorization: `Bearer ${token.accessToken}`
     });
 
-    // firstValueFrom statt deprecated toPromise()
+    // firstValueFrom instead of deprecated toPromise()
     return firstValueFrom(
       this.http.get<any>(
         `https://graph.microsoft.com/v1.0/users?$filter=startswith(displayName,'${this.searchInput}') or startswith(mail,'${this.searchInput}')`,
@@ -87,7 +87,7 @@ export class BoardDialogComponent {
   }
 
   /**
-   * Fügt einen Teilnehmer basierend auf der Suche hinzu
+   * Adds a participant based on the search
    */
   async addParticipant() {
     if (!this.searchInput) return;
@@ -96,11 +96,11 @@ export class BoardDialogComponent {
       const result = await this.searchUser();
       if (!result.value || result.value.length === 0) return;
 
-      const user = result.value[0]; // Ersten Treffer nehmen
+      const user = result.value[0]; // Take the first hit
       let photoUrl: string | undefined;
 
       try {
-        // Neuen Token für Zugriff auf Fotos abrufen
+        // Get new token for access to photos
         const token = await this.msalService.instance.acquireTokenSilent({
           scopes: ['User.Read'],
           account: this.msalService.instance.getActiveAccount()!
@@ -118,34 +118,34 @@ export class BoardDialogComponent {
         }
       } catch (photoError: any) {
         if (photoError.status === 404) {
-          console.warn(`Kein Profilbild für ${user.displayName}`);
+          console.warn(`No profile picture for ${user.displayName}`);
         } else {
-          console.error('Fehler beim Laden des Profilbilds', photoError);
+          console.error('Error loading profile picture', photoError);
         }
       }
 
       this.participants.push({
         name: user.displayName,
         email: user.mail || user.userPrincipalName,
-        role: 'Benutzer',
+        role: 'User',
         photo: photoUrl
       });
 
-      this.searchInput = ''; // Eingabe zurücksetzen
+      this.searchInput = ''; // Reset input
     } catch (err) {
-      console.error('Fehler beim Hinzufügen des Benutzers:', err);
+      console.error('Error adding user:', err);
     }
   }
 
   /**
-   * Schließt den Dialog ohne Änderungen
+   * Closes the dialog without changes
    */
   onCancel(): void {
     this.dialogRef.close();
   }
 
   /**
-   * Schließt den Dialog und gibt die Daten zurück
+   * Closes the dialog and returns the data
    */
   onSave(): void {
     this.dialogRef.close({

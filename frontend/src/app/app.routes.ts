@@ -1,23 +1,20 @@
 import { Routes } from '@angular/router';
-import { provideRouter } from '@angular/router';
-import { RestrictedPageComponent } from '../app/components/restricted-page/restricted-page.component';
-import { msalGuardGuard } from './msal-guard.guard';
-import { LoginComponent } from '../app/components/login-page/login-page.component';
-
-
+import { RestrictedPageComponent } from './components/restricted-page/restricted-page.component';
+import { MsalGuard } from '@azure/msal-angular';
 
 export const routes: Routes = [
-  {path: '', component: LoginComponent},
   {
-    path: 'restricted-page',
+    path: '',
+    redirectTo: 'home',
+    pathMatch: 'full',
+  },
+  {
+    path: 'home',
     component: RestrictedPageComponent,
-    canActivate: [msalGuardGuard],
+    canActivate: [MsalGuard], // Schützt die Route mit dem offiziellen MSAL Guard
   },
   {
     path: '**',
-    redirectTo: '',
+    redirectTo: 'home',
   },
 ];
-
-// Exportiere auch die Provider für main.ts
-export const AppRouteProviders = [provideRouter(routes)];

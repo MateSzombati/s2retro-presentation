@@ -1,16 +1,15 @@
-
 <div class="overview-container">
-  <h1>Guten Morgen, {{userName}}</h1>
+  <h1>Good morning, {{userName}}</h1>
 
   <!-- Top Summary -->
   <div class="summary-cards">
     <div class="card">
       <span class="number green">{{openBoards}}</span>
-      <span>Offene Boards</span>
+      <span>Open Boards</span>
     </div>
     <div class="card">
       <span class="number purple">{{todayMeetings}}</span>
-      <span>Meetings Heute</span>
+      <span>Meetings Today</span>
     </div>
     <div class="card">
       <span class="number red">{{adminChanges}}</span>
@@ -23,7 +22,7 @@
     <!-- Boards -->
     <div class="panel">
       <div class="panel-header">
-        <h2>Deine Boards</h2>
+        <h2>Your Boards</h2>
         <button class="new-board" (click)="addBoard()">New Board</button>
       </div>
       <ul>
@@ -41,19 +40,19 @@
     <!-- Meetings -->
     <div class="panel">
       <div class="panel-header">
-        <h2>Nächste Meetings</h2>
+        <h2>Next Meetings</h2>
         @if (loadingMeetings) {
-          <small>Laden…</small>
+          <small>Loading…</small>
         }
       </div>
 
       @if (!loadingMeetings && meetings.length === 0) {
-        <ul><li>Keine kommenden Meetings gefunden.</li></ul>
+        <ul><li>No upcoming meetings found.</li></ul>
       } @else {
         <ul>
           @for (ev of meetings; track ev.id) {
             <li class="meeting-item">
-              <div class="meeting-title">{{ ev.subject || 'Ohne Titel' }}</div>
+              <div class="meeting-title">{{ ev.subject || 'No Subject' }}</div>
               <div class="meeting-time">{{ formatTime(ev.start.dateTime) }}</div>
             </li>
           }
@@ -63,7 +62,7 @@
 
     <!-- Kontakte -->
     <div class="panel">
-      <h2>Kürzliche Kontakte</h2>
+      <h2>Recent Contacts</h2>
 
       @for (c of contacts; track c.id) {
         <div class="contact">
@@ -84,15 +83,15 @@
 
     <!-- Notifications -->
     <div class="panel">
-      <h2>Benachrichtigungen</h2>
+      <h2>Notifications</h2>
       <ul>
         @for (n of notifications; track n.id) {
           <li>
-            <span>{{ stripHtml(n.lastMessagePreview?.body?.content ?? '') || 'Neue Nachricht' }}</span>
-            <small>{{ n.lastMessagePreview?.from?.user?.displayName || 'Unbekannt' }}</small>
+            <span>{{ stripHtml(n.lastMessagePreview?.body?.content ?? '') || 'New Message' }}</span>
+            <small>{{ n.lastMessagePreview?.from?.user?.displayName || 'Unknown' }}</small>
           </li>
         } @empty {
-          <li><span>Keine neuen Nachrichten</span></li>
+          <li><span>No new messages</span></li>
         }
       </ul>
     </div>
