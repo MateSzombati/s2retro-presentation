@@ -1,0 +1,167 @@
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+.side{
+  width: 100%;
+  height: 100vh;
+  background-color: #18191a;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1000
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #fff;
+  padding-left: 100px;
+}
+
+.title img {
+  width: 48px;
+  height: 48px;
+  
+}
+
+.container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  
+}
+
+.card {
+  max-width: 980px;
+  color: #fff;
+  background-color: #161717;
+  border-radius: 12px;
+  padding: 26px;
+  
+  box-shadow: 0 8px 18px rgba(0,0,0,0.6);
+}
+.card h2 {
+  color:#fff;
+  margin:0 0 18px 0;
+}
+
+.report-form .row {
+  margin-bottom: 18px;
+  display:flex;
+  align-items:center
+}
+.report-form .label {
+  width:120px;
+  color: #fff;
+  font-weight: 500;
+}
+.report-form .inputs {
+  display:flex;
+  gap:12px;
+  align-items:center;
+  padding-top: 20px;
+}
+
+.checkbox{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  padding-bottom: 20px;
+}
+
+.filter-box {
+  margin-top:10px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,0.03);
+  padding:16px;
+  background: rgba(255,255,255,0.006);
+}
+
+.filter-title {
+  font-weight:700;
+  color: #9a9a9a;
+  margin-bottom:10px
+}
+.filter-box textarea {
+  width:100%;
+  height:160px;
+  background:transparent;
+  border:none;
+  color:#ddd;
+  resize:vertical;
+  outline:none;
+}
+
+.actions {
+  margin-top:18px;
+}
+.btn-primary {
+  background-color: #98bf23;
+  color:#0b0b0b;
+  padding:8px 14px;
+  border-radius:8px;
+  border:none;
+  cursor:pointer;
+  font-weight:600;
+}
+
+/* Input-Text weiß machen */
+::ng-deep .mat-mdc-text-field-wrapper input.mat-mdc-input-element {
+  color: #a4a4a4 !important;
+}
+
+/* Label (Placeholder / mat-label) ebenfalls weiß */
+::ng-deep .mat-mdc-text-field-wrapper .mdc-floating-label {
+  color: #a4a4a4 !important;
+}
+
+/* Icon-Buttons (Datepicker Toggle) weiß einfärben */
+::ng-deep .mat-mdc-form-field-icon-suffix button.mat-icon-button {
+  color: #a4a4a4 !important;
+}
+
+/* Label der Combobox (Layout) weiß */
+::ng-deep .mat-mdc-form-field .mdc-floating-label {
+  color: #a4a4a4 !important;
+}
+
+/* Der ausgewählte Text (Trigger) in der Combobox */
+::ng-deep .mat-mdc-select-value {
+  color: #a4a4a4 !important;
+}
+
+/* Das Dropdown-Icon (Pfeil) weiß */
+::ng-deep .mat-mdc-select-arrow {
+  color: #a4a4a4 !important;
+}
+
+/* Die Optionsliste im Dropdown */
+::ng-deep .mat-mdc-select-panel .mat-mdc-option {
+  color: black !important;
+  background-color: #333; /* optional: dunkler Hintergrund */
+}
+
+/* Text neben der Checkbox weiß */
+::ng-deep .mat-mdc-checkbox .mdc-label {
+  color: #a4a4a4 !important;
+}
+
+/* Rahmen der Checkbox weiß */
+::ng-deep .mat-mdc-checkbox .mdc-checkbox__background {
+  border-color: #a4a4a4 !important;
+}
+
+/* Das Häkchen + Hintergrund, wenn aktiviert */
+::ng-deep .mat-mdc-checkbox.mdc-checkbox--selected .mdc-checkbox__background {
+  background-color: #a4a4a4 !important;
+  border-color: #a4a4a4 !important;
+}
+
+/* Häkchen selbst schwarz machen, damit man es auf weißem Hintergrund sieht */
+::ng-deep .mat-mdc-checkbox.mdc-checkbox--selected .mdc-checkbox__checkmark {
+  color: black !important;
+}
+
+
+
