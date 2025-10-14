@@ -4,9 +4,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MsalService } from '@azure/msal-angular';
-import { BoardDialogComponent, BoardData } from '../board-dialog/board-dialog.component';
 import { interval, switchMap, catchError, of, firstValueFrom, Subject, takeUntil } from 'rxjs';
 import { UserInfoService } from '../../services/user-info.service';
+import { ChartComponent } from '../chart/chart.component';
 
 // ==== Models / Types ====
 interface Board {
@@ -47,7 +47,7 @@ type GraphChat = {
 @Component({
   selector: 'app-restricted-page',
   standalone: true,
-  imports: [MatIconModule],
+  imports: [MatIconModule, ChartComponent],
   templateUrl: './restricted-page.component.html',
   styleUrls: ['./restricted-page.component.css'],
 })
@@ -72,7 +72,6 @@ export class RestrictedPageComponent implements OnInit, OnDestroy {
 
   meetings: GraphEvent[] = [];
   notifications: GraphChat[] = [];
-  contacts: { id: string; name: string; photoUrl?: string }[] = [];
 
   todayMeetings = 0;
   adminChanges = 0;
@@ -86,7 +85,6 @@ export class RestrictedPageComponent implements OnInit, OnDestroy {
     this.ensureActiveAccount();
     Promise.all([
       this.loadUpcomingMeetings(),
-      this.loadRecentContacts(),
     ]);
 
     this.startNotificationsPolling();
@@ -121,16 +119,7 @@ export class RestrictedPageComponent implements OnInit, OnDestroy {
 
   // === Board Management ===
   addBoard(): void {
-    const dialogRef = this.dialog.open(BoardDialogComponent, {
-      width: '400px',
-      data: { name: '', status: '' } as BoardData,
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.boards.push(result);
-      }
-    });
+    this.router.navigate(['/createboard']);
   }
 
   get openBoards(): number {
@@ -263,58 +252,5 @@ export class RestrictedPageComponent implements OnInit, OnDestroy {
     }).catch(err => {
       console.error('Could not retrieve token', err);
     });
-  }
-
-  // === Graph API: Kontakte ===
-  private async loadRecentContacts(): Promise<void> {
-    try {
-      const account = this.msal.instance.getActiveAccount();
-      if (!account) return;
-
-      // Token für Teams-Chat
-      const { accessToken } = await this.msal.instance.acquireTokenSilent({
-        scopes: ['Chat.Read'],
-        account,
-      });
-
-      const url = `https://graph.microsoft.com/v1.0/me/chats?$expand=members,lastMessagePreview&$top=10`;
-      const headers = new HttpHeaders({ Authorization: `Bearer ${accessToken}` });
-
-      const res = await firstValueFrom(
-        this.http.get<{ value: GraphChat[] }>(url, { headers })
-      );
-      const chats = res?.value ?? [];
-
-      // Mitglieder extrahieren (außer man selbst)
-      const members = chats.flatMap((chat) =>
-        (chat.members ?? [])
-          .filter((m) => m.user && m.user.id !== account.localAccountId)
-          .map((m) => ({ id: m.user!.id, name: m.user!.displayName }))
-      );
-
-      // Doppelte rausfiltern
-      const unique = members.filter(
-        (m, i, arr) => arr.findIndex((x) => x.id === m.id) === i
-      );
-
-      // Fotos laden
-      this.contacts = await Promise.all(
-        unique.map(async (u) => {
-          try {
-            const blob = await firstValueFrom(
-              this.http.get(`https://graph.microsoft.com/v1.0/users/${u.id}/photo/$value`, {
-                headers,
-                responseType: 'blob',
-              })
-            );
-            return { ...u, photoUrl: URL.createObjectURL(blob!) };
-          } catch {
-            return u; // Fallback without photo
-          }
-        })
-      );
-    } catch (err) {
-      console.error('Failed to load contacts', err);
-    }
   }
 }

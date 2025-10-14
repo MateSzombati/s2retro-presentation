@@ -6,4 +6,10 @@
   flex-grow: 1;
   background-color: #111;
   min-height: 100vh;
+  margin-left: 210px;
+  transition: margin-left 0.3s ease;
+}
+
+body.sidebar-collapsed .content-container {
+  margin-left: 50px;
 }

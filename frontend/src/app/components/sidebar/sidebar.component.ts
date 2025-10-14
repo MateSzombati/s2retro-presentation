@@ -6,10 +6,9 @@ import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-sidebar',
-  standalone: true,
   imports: [CommonModule],
   templateUrl: './sidebar.component.html',
-  styleUrl: './sidebar.component.css'
+  styleUrl: './sidebar.component.scss'
 })
 export class SidebarComponent implements OnInit {
   activeRoute: string = '';
@@ -23,7 +22,7 @@ export class SidebarComponent implements OnInit {
   isSidebarCollapsed = false;
   showSidebarText = true;
 
- toggleSidebar() {
+ public toggleSidebar() {
     this.isSidebarCollapsed = !this.isSidebarCollapsed;
 
     // Toggle body class for global CSS styling
@@ -47,6 +46,12 @@ export class SidebarComponent implements OnInit {
   }
 
 
+  public toggleDropdownFromParent() {
+    if(!this.isSidebarCollapsed) {
+      this.dropdownOpen = !this.dropdownOpen;
+    }
+  }
+
 
 
   navigateTo(item: any) {
@@ -60,7 +65,7 @@ export class SidebarComponent implements OnInit {
 
 
   sidebarItems = [
-    { name: 'home', label: 'Home', icon: 'assets/icons/überblick_normal.png' },
+    { name: '', label: 'Überblick', icon: 'assets/icons/überblick_normal.png' },
     { name: 'boardlayout', label: 'Board Layout', icon: 'assets/icons/board_layout_normal.png' },
     { name: 'controlling', label: 'Controlling', icon: 'assets/icons/controlling_normal.png' },
     { name: 'retroboard', label: 'Retro Boards', icon: 'assets/icons/boards_normal.png' },
@@ -109,7 +114,6 @@ export class SidebarComponent implements OnInit {
   toggleDropdown(event: MouseEvent) {
     event.stopPropagation(); // Prevent parent click
     this.dropdownOpen = !this.dropdownOpen;
-
   }
 
   settingsClick(){

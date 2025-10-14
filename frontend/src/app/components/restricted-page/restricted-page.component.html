@@ -60,23 +60,11 @@
       }
     </div>
 
-    <!-- Kontakte -->
+    <!-- Chart -->
     <div class="panel">
-      <h2>Recent Contacts</h2>
-
-      @for (c of contacts; track c.id) {
-        <div class="contact">
-          <div class="avatar">
-            @if (c.photoUrl) {
-              <img [src]="c.photoUrl" alt="{{ c.name }}">
-            } @else {
-              <mat-icon>person</mat-icon>
-            }
-          </div>
-          <div>
-            <span>{{ c.name }}</span>
-          </div>
-        </div>
+      <h2>Recent Activity</h2>
+      @defer {
+        <app-chart></app-chart>
       }
     </div>
 

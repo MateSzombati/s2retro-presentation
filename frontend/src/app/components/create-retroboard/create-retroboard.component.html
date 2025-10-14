@@ -1,0 +1,63 @@
+<div class="layout-container">
+  <div class="head">
+    <img src="../../../assets/icons/boards_green.png" alt="boardlayout icon" width="25px" style="margin-left: 18px; margin-right: 15px;">
+    <h1>Retro Board erstellen</h1>
+    <div class="head-actions">
+      <button class="back-button" (click)="goBack()">Back</button>
+      <button class="save-button" (click)="saveBoard()">+ Create Board</button>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="form-section">
+      <div class="form-row">
+        <div class="form-field">
+          <h2>Board Name</h2>
+          <input class="board-name-input" placeholder="Board Name eingeben" type="text" [(ngModel)]="boardName" />
+        </div>
+        <div class="form-field">
+          <h2>Typ</h2>
+          <select class="custom-select" [(ngModel)]="layout">
+            <option value="Completed">Completed</option>
+            <option value="Meeting Phase">Meeting Phase</option>
+            <option value="Entry Phase">Entry Phase</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <h2>Start Datum</h2>
+          <input class="date-input" type="date" [(ngModel)]="startDate" />
+        </div>
+        <div class="form-field">
+          <h2>End Datum</h2>
+          <input class="date-input" type="date" [(ngModel)]="endDate" />
+        </div>
+      </div>
+    </div>
+
+    <div class="participants-section">
+      <h2>Teilnehmer</h2>
+      <div class="add-user-row">
+        <input class="participant-search-input" placeholder="Search user by name or email" type="text" [(ngModel)]="searchInput" (keyup.enter)="addParticipant()" />
+        <button class="add-participant-button" (click)="addParticipant()">Add</button>
+      </div>
+      <div class="participants-list">
+        <div class="participant-item" *ngFor="let p of participants">
+          <div class="participant-info">
+            <img *ngIf="p.photo" [src]="p.photo" class="avatar">
+            <div *ngIf="!p.photo" class="avatar placeholder"></div>
+            <div class="text-info">
+              <div class="name">{{ p.name }}</div>
+              <div class="email">{{ p.email }}</div>
+            </div>
+          </div>
+          <select class="role-select" [(ngModel)]="p.role">
+            <option value="User">User</option>
+            <option value="Admin">Admin</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
