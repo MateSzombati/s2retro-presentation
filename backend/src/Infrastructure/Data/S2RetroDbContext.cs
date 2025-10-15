@@ -10,7 +10,7 @@ public class S2RetroDbContext : DbContext
     public DbSet<Layout> Layouts { get; set; } = null!;
     public DbSet<Column> Columns { get; set; } = null!;
     public DbSet<Category> Categories { get; set; } = null!;
-    public DbSet<Value> Values { get; set; } = null!;
+    public DbSet<CategoryValue> Values { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

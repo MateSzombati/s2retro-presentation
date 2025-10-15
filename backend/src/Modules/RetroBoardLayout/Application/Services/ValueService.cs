@@ -24,7 +24,7 @@ public class ValueService
 
     public async Task<ReadValueDto> CreateAsync(CreateValueDto dto)
     {
-        var Value = _mapper.Map<Value>(dto);
+        var Value = _mapper.Map<CategoryValue>(dto);
         await _repo.AddAsync(Value);
         await _repo.SaveChangesAsync();
         return _mapper.Map<ReadValueDto>(Value);

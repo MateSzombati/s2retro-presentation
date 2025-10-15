@@ -1,13 +1,17 @@
 ﻿namespace S2Retro.Modules.RetroBoardLayout.Domain.Entities;
 
+using S2Retro.Modules.RetroBoardLayout.Domain.Enums;
+
 public class Column
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
     public int Position { get; set; }
-    public string Name { get; set; } = null!;
-    public string Type { get; set; } = null!;
-    public int LayoutId { get; set; }
-    public Layout Layout { get; set; } = null!;
-    public int? CategoryId { get; set; }
+    public required string Name { get; set; }
+    public required ColumnType Type { get; set; }
+
+    public Guid LayoutId { get; set; }
+    public required Layout Layout { get; set; }
+
+    public Guid? CategoryId { get; set; }
     public Category? Category { get; set; }
 }

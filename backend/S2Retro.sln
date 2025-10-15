@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "S2Retro.Api", "src\Api\S2Re
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "S2Retro.Infrastructure", "src\Infrastructure\S2Retro.Infrastructure.csproj", "{B837D50A-5FA5-4E75-9968-5F45D922CEC6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{14664F7F-35B4-4DB4-BA7E-D77A850521B8}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{14664F7F-35B4-4DB4-BA7E-D77A850521B8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{CB232151-35B9-4E21-BC70-1CF24ED91526}"
 EndProject

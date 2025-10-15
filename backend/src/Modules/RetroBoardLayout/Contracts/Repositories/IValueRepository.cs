@@ -4,10 +4,10 @@ namespace S2Retro.Modules.RetroBoardLayout.Contracts.Repositories;
 
 public interface IValueRepository
 {
-    Task<Value?> GetByIdAsync(int id);
-    Task<List<Value>> GetByCategoryIdAsync(int categoryId);
-    Task AddAsync(Value value);
-    void Update(Value value);
-    void Delete(Value value);
+    Task<CategoryValue?> GetByIdAsync(int id);
+    Task<List<CategoryValue>> GetByCategoryIdAsync(int categoryId);
+    Task AddAsync(CategoryValue value);
+    void Update(CategoryValue value);
+    void Delete(CategoryValue value);
     Task SaveChangesAsync();
 }

@@ -8,8 +8,8 @@ public class ValueMappingProfile : Profile
 {
     public ValueMappingProfile()
     {
-        CreateMap<Value, ReadValueDto>();
-        CreateMap<CreateValueDto, Value>();
-        CreateMap<UpdateValueDto, Value>();
+        CreateMap<CategoryValue, ReadValueDto>();
+        CreateMap<CreateValueDto, CategoryValue>();
+        CreateMap<UpdateValueDto, CategoryValue>();
     }
 }
