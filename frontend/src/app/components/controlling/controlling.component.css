@@ -1,13 +1,7 @@
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
 
-.side{
-  width: 100%;
-  height: 100vh;
-  background-color: #18191a;
-  position: fixed;
-  left: 0;
-  top: 0;
-  z-index: 1000
+.controlling-container {
+
 }
 
 .title {
@@ -15,153 +9,155 @@
   align-items: center;
   gap: 12px;
   color: #fff;
-  padding-left: 100px;
+  margin-bottom: 20px; /* Add some space below the title */
 }
 
-.title img {
-  width: 48px;
-  height: 48px;
-  
-}
-
-.container{
+.container {
   display: flex;
   justify-content: center;
-  align-items: center;
-  flex: 1;
-  
 }
 
 .card {
+  width: 100%;
   max-width: 980px;
   color: #fff;
-  background-color: #161717;
-  border-radius: 12px;
-  padding: 26px;
-  
-  box-shadow: 0 8px 18px rgba(0,0,0,0.6);
+  background-color: #1E1F21; /* Slightly lighter card background */
+  border-radius: 16px; /* Larger radius */
+  padding: 32px; /* More padding */
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
+
 .card h2 {
-  color:#fff;
-  margin:0 0 18px 0;
-}
-
-.report-form .row {
-  margin-bottom: 18px;
-  display:flex;
-  align-items:center
-}
-.report-form .label {
-  width:120px;
   color: #fff;
-  font-weight: 500;
-}
-.report-form .inputs {
-  display:flex;
-  gap:12px;
-  align-items:center;
-  padding-top: 20px;
+  margin: 0 0 24px 0; /* More space below heading */
+  font-size: 1.5em;
 }
 
-.checkbox{
-  display:flex;
-  gap:12px;
-  align-items:center;
-  padding-bottom: 20px;
+.report-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Space between form rows */
+}
+
+.form-row {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.full-width {
+  flex: 1;
+}
+
+.only-closed-checkbox {
+  margin-top: -16px; /* Align with the top of the form fields */
 }
 
 .filter-box {
-  margin-top:10px;
-  border-radius:12px;
-  border:1px solid rgba(255,255,255,0.03);
-  padding:16px;
-  background: rgba(255,255,255,0.006);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 16px;
+  background: #18191a;
 }
 
 .filter-title {
-  font-weight:700;
-  color: #9a9a9a;
-  margin-bottom:10px
+  font-weight: 500; /* Less aggressive font weight */
+  color: #a4a4a4;
+  margin-bottom: 10px;
 }
+
 .filter-box textarea {
-  width:100%;
-  height:160px;
-  background:transparent;
-  border:none;
-  color:#ddd;
-  resize:vertical;
-  outline:none;
+  width: 100%;
+  height: 120px; /* Slightly smaller height */
+  background: transparent;
+  border: none;
+  color: #ddd;
+  resize: vertical;
+  outline: none;
+  font-family: inherit;
+  font-size: 1em;
 }
 
 .actions {
-  margin-top:18px;
+  margin-top: 10px;
 }
+
 .btn-primary {
   background-color: #98bf23;
-  color:#0b0b0b;
-  padding:8px 14px;
-  border-radius:8px;
-  border:none;
-  cursor:pointer;
-  font-weight:600;
+  color: #0b0b0b;
+  padding: 12px 14px; /* Taller button */
+  border-radius: 12px; /* Match card radius */
+  border: none;
+  cursor: pointer;
+  font-weight: 700; /* Bolder text */
+  width: 100%; /* Full width */
+  font-size: 1em;
+  transition: background-color 0.2s ease;
 }
 
-/* Input-Text weiß machen */
+.btn-primary:hover {
+  background-color: #a9d034; /* Lighter on hover */
+}
+
+/* --- Angular Material Override --- */
+
+/* Input-Text */
 ::ng-deep .mat-mdc-text-field-wrapper input.mat-mdc-input-element {
-  color: #a4a4a4 !important;
+  color: #e0e0e0 !important;
 }
 
-/* Label (Placeholder / mat-label) ebenfalls weiß */
+/* Label (Placeholder / mat-label) */
 ::ng-deep .mat-mdc-text-field-wrapper .mdc-floating-label {
   color: #a4a4a4 !important;
 }
 
-/* Icon-Buttons (Datepicker Toggle) weiß einfärben */
+/* Icon-Buttons (Datepicker Toggle) */
 ::ng-deep .mat-mdc-form-field-icon-suffix button.mat-icon-button {
   color: #a4a4a4 !important;
 }
 
-/* Label der Combobox (Layout) weiß */
+/* Combobox Label */
 ::ng-deep .mat-mdc-form-field .mdc-floating-label {
   color: #a4a4a4 !important;
 }
 
-/* Der ausgewählte Text (Trigger) in der Combobox */
+/* Combobox Selected Text */
 ::ng-deep .mat-mdc-select-value {
-  color: #a4a4a4 !important;
+  color: #e0e0e0 !important;
 }
 
-/* Das Dropdown-Icon (Pfeil) weiß */
+/* Combobox Dropdown Icon */
 ::ng-deep .mat-mdc-select-arrow {
   color: #a4a4a4 !important;
 }
 
-/* Die Optionsliste im Dropdown */
-::ng-deep .mat-mdc-select-panel .mat-mdc-option {
-  color: black !important;
-  background-color: #333; /* optional: dunkler Hintergrund */
-}
-
-/* Text neben der Checkbox weiß */
+/* Checkbox Label */
 ::ng-deep .mat-mdc-checkbox .mdc-label {
-  color: #a4a4a4 !important;
+  color: #b0b0b0 !important;
 }
 
-/* Rahmen der Checkbox weiß */
+/* Checkbox Border */
 ::ng-deep .mat-mdc-checkbox .mdc-checkbox__background {
-  border-color: #a4a4a4 !important;
+  border-color: #b0b0b0 !important;
 }
 
-/* Das Häkchen + Hintergrund, wenn aktiviert */
+/* Checkbox Background when selected */
 ::ng-deep .mat-mdc-checkbox.mdc-checkbox--selected .mdc-checkbox__background {
-  background-color: #a4a4a4 !important;
-  border-color: #a4a4a4 !important;
+  background-color: #b0b0b0db !important;
+  border-color: #b0b0b0db !important;
 }
 
-/* Häkchen selbst schwarz machen, damit man es auf weißem Hintergrund sieht */
+/* Checkbox Checkmark */
 ::ng-deep .mat-mdc-checkbox.mdc-checkbox--selected .mdc-checkbox__checkmark {
   color: black !important;
 }
+
+/* Checkbox Hover Effect */
+::ng-deep .mat-mdc-checkbox:hover .mdc-checkbox__background {
+  border-color: #d0d0d0 !important;
+}
+
+
 
 
 

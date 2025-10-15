@@ -1,43 +1,35 @@
-<div class="side">
+<div class="controlling-container">
   <div class="title">
     <img src="assets\financeGraph.png" alt="Finance Icon">
     <h1>Controlling</h1>
   </div>
 
-  <section class="content">
+  <section class="controlling-content">
     <div class="container">
       <div class="card">
         <h2>Create Report</h2>
 
         <form [formGroup]="form" (ngSubmit)="generateReport()" class="report-form">
 
-          <!-- Period -->
-          <div class="row period">
-            <label class="label">Period:</label>
-            <div class="inputs">
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Start Date</mat-label>
+              <input matInput [matDatepicker]="startPicker" formControlName="startDate">
+              <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+              <mat-datepicker #startPicker></mat-datepicker>
+            </mat-form-field>
 
-              <mat-form-field appearance="outline">
-                <mat-label>Start</mat-label>
-                <input matInput [matDatepicker]="startPicker" formControlName="startDate">
-                <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
-                <mat-datepicker #startPicker></mat-datepicker>
-              </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>End Date</mat-label>
+              <input matInput [matDatepicker]="endPicker" formControlName="endDate">
+              <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+              <mat-datepicker #endPicker></mat-datepicker>
+            </mat-form-field>
 
-              <mat-form-field appearance="outline">
-                <mat-label>End</mat-label>
-                <input matInput [matDatepicker]="endPicker" formControlName="endDate">
-                <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
-                <mat-datepicker #endPicker></mat-datepicker>
-              </mat-form-field>
-
-              <label class="checkbox">
-                <mat-checkbox formControlName="onlyClosed">Only closed boards</mat-checkbox>
-              </label>
-            </div>
+            <mat-checkbox formControlName="onlyClosed" class="only-closed-checkbox">Only closed boards</mat-checkbox>
           </div>
 
-          <!-- Layout Selection -->
-          <div class="row">
+          <div class="form-row">
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Layout</mat-label>
               <mat-select formControlName="layout">
@@ -54,7 +46,7 @@
             <textarea
               matInput
               formControlName="filters"
-              placeholder="Enter filter options here..."
+              [placeholder]="filterPlaceholder"
             ></textarea>
           </div>
 

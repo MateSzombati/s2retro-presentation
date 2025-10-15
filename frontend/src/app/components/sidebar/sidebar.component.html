@@ -1,0 +1,92 @@
+<nav class="sidebar" [class.collapsed]="isSidebarCollapsed">
+
+    <div class="sidebar-logo">
+        <div class="burger-button" (click)="toggleSidebar()" >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5" />
+            </svg>
+        </div>
+    </div>
+
+    
+    
+    <div class="sidebar-item-section">
+
+        @for (item of sidebarItems; track item.name) {
+            <div class="sidebar-item-wrapper">
+
+                <div class="sidebar-item" [class.clicked]="selectedItem === item.name" (click)="onSelectItem(item)">
+                    <img class="sidebar-item-img" [src]="item.icon" width="15px" />
+                    @if (showSidebarText) {
+                        <p class="sidebar-item-text" style="width: 90px;">{{ item.label }}</p>
+                    }
+
+                    @if (item.name === 'retroboard') {
+                        <button style="right: 50px;" class="sidebar-item-button" (click)="toggleDropdown($event)">
+                            <svg class="dropdown-icon" [class.clicked]="dropdownOpen" style="scale: 1.5;" width="30" height="25" viewBox="0 0 26 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <g filter="url(#filter0_d_109_19)">
+                                <path d="M20.5 8.25L13 15.75L5.5 8.25" stroke="#B1B1B1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </g>
+                                <defs>
+                                <filter id="filter0_d_109_19" x="-3" y="0" width="32" height="32" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+                                <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+                                <feOffset dy="4"/>
+                                <feGaussianBlur stdDeviation="2"/>
+                                <feComposite in2="hardAlpha" operator="out"/>
+                                <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+                                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_109_19"/>
+                                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_109_19" result="shape"/>
+                                </filter>
+                                </defs>
+                            </svg>
+                        </button>
+                        <button class="sidebar-item-button" (click)="onAddBoard($event)" style="padding-top: 1px; padding-bottom: 0px; right: 20px; margin-left: 10px;">+</button>
+                    }
+                </div>
+
+                @if (item.name === 'retroboard' && dropdownOpen) {
+                    <div class="sidebar-board-item-section">
+                    @for (subItem of boardItems; track subItem.name) {
+                        <div
+                            class="sidebar-item board-hover-wrapper"
+                            [class.clicked]="selectedItem === subItem.name"
+                            (click)="onSelectItem(subItem)"
+                            (mouseenter)="subItem.hover = true"
+                            (mouseleave)="subItem.hover = false"
+                        >
+                            <div class="board-letter-icon">{{ getFirstLetterCapital(subItem.label) }}</div>
+                            @if (showSidebarText) {
+                                <p class="sidebar-item-text">{{ subItem.label }}</p>
+                            }
+
+                            @if (subItem.hover) {
+                                <button
+                                class="board-action-button"
+                                (click)="onBoardItemAction(subItem); $event.stopPropagation()"
+                                >
+                                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 6.75C11.8011 6.75 11.6103 6.67098 11.4697 6.53033C11.329 6.38968 11.25 6.19891 11.25 6C11.25 5.80109 11.329 5.61032 11.4697 5.46967C11.6103 5.32902 11.8011 5.25 12 5.25C12.1989 5.25 12.3897 5.32902 12.5303 5.46967C12.671 5.61032 12.75 5.80109 12.75 6C12.75 6.19891 12.671 6.38968 12.5303 6.53033C12.3897 6.67098 12.1989 6.75 12 6.75ZM12 12.75C11.8011 12.75 11.6103 12.671 11.4697 12.5303C11.329 12.3897 11.25 12.1989 11.25 12C11.25 11.8011 11.329 11.6103 11.4697 11.4697C11.6103 11.329 11.8011 11.25 12 11.25C12.1989 11.25 12.3897 11.329 12.5303 11.4697C12.671 11.6103 12.75 11.8011 12.75 12C12.75 12.1989 12.671 12.3897 12.5303 12.5303C12.3897 12.671 12.1989 12.75 12 12.75ZM12 18.75C11.8011 18.75 11.6103 18.671 11.4697 18.5303C11.329 18.3897 11.25 18.1989 11.25 18C11.25 17.8011 11.329 17.6103 11.4697 17.4697C11.6103 17.329 11.8011 17.25 12 17.25C12.1989 17.25 12.3897 17.329 12.5303 17.4697C12.671 17.6103 12.75 17.8011 12.75 18C12.75 18.1989 12.671 18.3897 12.5303 18.5303C12.3897 18.671 12.1989 18.75 12 18.75Z" stroke="#B1B1B1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                </button>
+                            }
+                        </div>
+                    }
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
+
+        <div class="sidebar-bottom-section">
+
+        <div class="sidebar-item" style="" [class.clicked]="isSettingsClicked" (click)="settingsClick()">
+            <img class="sidebar-item-img" src="../../../assets/icons/settings_normal.png" width="15px" style="margin-top: 1px">
+            @if (showSidebarText) {
+                <p class="sidebar-item-text">Settings</p>
+            }
+        </div>
+
+    </div>
+</nav>
