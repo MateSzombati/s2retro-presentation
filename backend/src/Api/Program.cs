@@ -33,7 +33,7 @@ builder.Services.AddDbContext<S2RetroDbContext>(options =>
 builder.Services.AddAutoMapper(cfg => cfg.AddProfile<LayoutMappingProfile>());
 builder.Services.AddAutoMapper(cfg => cfg.AddProfile<ColumnMappingProfile>());
 builder.Services.AddAutoMapper(cfg => cfg.AddProfile<CategoryMappingProfile>());
-builder.Services.AddAutoMapper(cfg => cfg.AddProfile<ValueMappingProfile>());
+builder.Services.AddAutoMapper(cfg => cfg.AddProfile<CategoryValueMappingProfile>());
 
 builder.Services.AddScoped<ILayoutRepository, LayoutRepository>();
 builder.Services.AddScoped<IColumnRepository, ColumnRepository>();

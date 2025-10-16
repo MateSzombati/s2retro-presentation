@@ -4,9 +4,9 @@ using S2Retro.Modules.RetroBoardLayout.Domain.Entities;
 
 namespace S2Retro.Modules.RetroBoardLayout.Application.Mapping;
 
-public class ValueMappingProfile : Profile
+public class CategoryValueMappingProfile : Profile
 {
-    public ValueMappingProfile()
+    public CategoryValueMappingProfile()
     {
         CreateMap<CategoryValue, ReadValueDto>();
         CreateMap<CreateValueDto, CategoryValue>();

@@ -1,6 +1,6 @@
-﻿namespace S2Retro.Modules.RetroBoardLayout.Domain.Entities;
+﻿using S2Retro.Modules.RetroBoardLayout.Domain.Enums;
 
-using S2Retro.Modules.RetroBoardLayout.Domain.Enums;
+namespace S2Retro.Modules.RetroBoardLayout.Domain.Entities;
 
 public class Column
 {
