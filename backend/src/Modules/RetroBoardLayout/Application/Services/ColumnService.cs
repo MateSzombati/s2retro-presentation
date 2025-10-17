@@ -1,47 +1,40 @@
 ﻿using AutoMapper;
-using S2Retro.Modules.RetroBoardLayout.Contracts.DTOs.Columns;
-using S2Retro.Modules.RetroBoardLayout.Contracts.Repositories;
+using S2Retro.Modules.RetroBoardLayout.Application.DTOs.Columns;
+using S2Retro.Modules.RetroBoardLayout.Application.Interfaces.Repositories;
+using S2Retro.Modules.RetroBoardLayout.Application.Interfaces.Services;
 using S2Retro.Modules.RetroBoardLayout.Domain.Entities;
 
-namespace S2Retro.Modules.RetroBoardColumn.Application.Services;
+namespace S2Retro.Modules.RetroBoardLayout.Application.Services;
 
-public class ColumnService
+public class ColumnService(IColumnRepository columnRepository, IMapper mapper) : IColumnService
 {
-    private readonly IColumnRepository _repo;
-    private readonly IMapper _mapper;
-
-    public ColumnService(IColumnRepository repo, IMapper mapper)
+    public async Task<IEnumerable<ColumnReadDto>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        _repo = repo;
-        _mapper = mapper;
+        var columns = await columnRepository.GetAllAsync(cancellationToken);
+        return mapper.Map<IEnumerable<ColumnReadDto>>(columns);
     }
 
-    public async Task<ReadColumnDto?> GetByIdAsync(int id) =>
-        _mapper.Map<ReadColumnDto>(await _repo.GetByIdAsync(id));
-
-    public async Task<List<ReadColumnDto>> GetByLayoutIdAsync(int layoutId) =>
-        _mapper.Map<List<ReadColumnDto>>(await _repo.GetByLayoutIdAsync(layoutId));
-
-    public async Task<ReadColumnDto> CreateAsync(CreateColumnDto dto)
+    public async Task<ColumnReadDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var Column = _mapper.Map<Column>(dto);
-        await _repo.AddAsync(Column);
-        await _repo.SaveChangesAsync();
-        return _mapper.Map<ReadColumnDto>(Column);
+        var column = await columnRepository.GetByIdAsync(id, cancellationToken);
+        return mapper.Map<ColumnReadDto?>(column);
     }
 
-    public async Task UpdateAsync(int id, UpdateColumnDto dto)
+    public async Task<Guid> CreateAsync(ColumnCreateDto dto, CancellationToken cancellationToken = default)
     {
-        var Column = await _repo.GetByIdAsync(id) ?? throw new KeyNotFoundException("Column not found");
-        _mapper.Map(dto, Column);
-        _repo.Update(Column);
-        await _repo.SaveChangesAsync();
+        var column = mapper.Map<Column>(dto);
+        await columnRepository.AddAsync(column, cancellationToken);
+        return column.Id;
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task UpdateAsync(ColumnUpdateDto dto, CancellationToken cancellationToken = default)
     {
-        var Column = await _repo.GetByIdAsync(id) ?? throw new KeyNotFoundException("Column not found");
-        _repo.Delete(Column);
-        await _repo.SaveChangesAsync();
+        var column = mapper.Map<Column>(dto);
+        await columnRepository.UpdateAsync(column, cancellationToken);
+    }
+
+    public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        await columnRepository.DeleteAsync(id, cancellationToken);
     }
 }

@@ -1,47 +1,40 @@
 ﻿using AutoMapper;
-using S2Retro.Modules.RetroBoardLayout.Contracts.DTOs.Categories;
-using S2Retro.Modules.RetroBoardLayout.Contracts.Repositories;
+using S2Retro.Modules.RetroBoardLayout.Application.DTOs.Categories;
+using S2Retro.Modules.RetroBoardLayout.Application.Interfaces.Repositories;
+using S2Retro.Modules.RetroBoardLayout.Application.Interfaces.Services;
 using S2Retro.Modules.RetroBoardLayout.Domain.Entities;
 
-namespace S2Retro.Modules.RetroBoardCategory.Application.Services;
+namespace S2Retro.Modules.RetroBoardLayout.Application.Services;
 
-public class CategoryService
+public class CategoryService(ICategoryRepository categoryRepository, IMapper mapper) : ICategoryService
 {
-    private readonly ICategoryRepository _repo;
-    private readonly IMapper _mapper;
-
-    public CategoryService(ICategoryRepository repo, IMapper mapper)
+    public async Task<IEnumerable<CategoryReadDto>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        _repo = repo;
-        _mapper = mapper;
+        var categories = await categoryRepository.GetAllAsync(cancellationToken);
+        return mapper.Map<IEnumerable<CategoryReadDto>>(categories);
     }
 
-    public async Task<ReadCategoryDto?> GetByIdAsync(int id) =>
-        _mapper.Map<ReadCategoryDto>(await _repo.GetByIdAsync(id));
-
-    public async Task<List<ReadCategoryDto>> GetAllAsync() =>
-        _mapper.Map<List<ReadCategoryDto>>(await _repo.GetAllAsync());
-
-    public async Task<ReadCategoryDto> CreateAsync(CreateCategoryDto dto)
+    public async Task<CategoryReadDto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var Category = _mapper.Map<Category>(dto);
-        await _repo.AddAsync(Category);
-        await _repo.SaveChangesAsync();
-        return _mapper.Map<ReadCategoryDto>(Category);
+        var category = await categoryRepository.GetByIdAsync(id, cancellationToken);
+        return mapper.Map<CategoryReadDto?>(category);
     }
 
-    public async Task UpdateAsync(int id, UpdateCategoryDto dto)
+    public async Task<Guid> CreateAsync(CategoryCreateDto dto, CancellationToken cancellationToken = default)
     {
-        var Category = await _repo.GetByIdAsync(id) ?? throw new KeyNotFoundException("Category not found");
-        _mapper.Map(dto, Category);
-        _repo.Update(Category);
-        await _repo.SaveChangesAsync();
+        var category = mapper.Map<Category>(dto);
+        await categoryRepository.AddAsync(category, cancellationToken);
+        return category.Id;
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task UpdateAsync(CategoryUpdateDto dto, CancellationToken cancellationToken = default)
     {
-        var Category = await _repo.GetByIdAsync(id) ?? throw new KeyNotFoundException("Category not found");
-        _repo.Delete(Category);
-        await _repo.SaveChangesAsync();
+        var category = mapper.Map<Category>(dto);
+        await categoryRepository.UpdateAsync(category, cancellationToken);
+    }
+
+    public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        await categoryRepository.DeleteAsync(id, cancellationToken);
     }
 }

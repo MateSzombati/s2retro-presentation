@@ -43,7 +43,7 @@ builder.Services.AddScoped<IValueRepository, ValueRepository>();
 builder.Services.AddScoped<LayoutService>();
 builder.Services.AddScoped<ColumnService>();
 builder.Services.AddScoped<CategoryService>();
-builder.Services.AddScoped<ValueService>();
+builder.Services.AddScoped<CategoryValueService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
