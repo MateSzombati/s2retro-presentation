@@ -1,25 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using S2Retro.Modules.RetroBoardLayout.Contracts.Repositories;
+using S2Retro.Modules.RetroBoardLayout.Application.Interfaces.Repositories;
 using S2Retro.Modules.RetroBoardLayout.Domain.Entities;
 
 namespace S2Retro.Infrastructure.Data.Repositories;
 
-public class CategoryRepository : ICategoryRepository
+public class CategoryRepository(S2RetroDbContext db) : Repository<Category>(db), ICategoryRepository
 {
-    private readonly S2RetroDbContext _db;
+    public override async Task<IEnumerable<Category>> GetAllAsync(CancellationToken cancellationToken = default)
+        => await db.Categories
+            .Include(c => c.Values)
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
 
-    public CategoryRepository(S2RetroDbContext db) => _db = db;
-
-    public async Task<Category?> GetByIdAsync(int id) =>
-        await _db.Categories.Include(c => c.Values).FirstOrDefaultAsync(c => c.Id == id);
-
-    public async Task<List<Category>> GetAllAsync() => await _db.Categories.ToListAsync();
-
-    public async Task AddAsync(Category category) => await _db.Categories.AddAsync(category);
-
-    public void Update(Category category) => _db.Categories.Update(category);
-
-    public void Delete(Category category) => _db.Categories.Remove(category);
-
-    public async Task SaveChangesAsync() => await _db.SaveChangesAsync();
+    public override async Task<Category?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+        => await db.Categories
+            .Include(c => c.Values)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
 }

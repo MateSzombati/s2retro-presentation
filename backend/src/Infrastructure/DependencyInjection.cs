@@ -23,6 +23,7 @@ public static class DependencyInjection
         services.AddScoped<IColumnRepository, ColumnRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<ICategoryValueRepository, CategoryValueRepository>();
+
         return services;
     }
 }

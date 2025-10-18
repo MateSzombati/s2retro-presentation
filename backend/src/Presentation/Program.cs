@@ -19,15 +19,26 @@ services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy", policy =>
     {
-        policy
-            .WithOrigins(allowedOrigins)
-            .WithHeaders(allowedHeaders)
-            .WithMethods(allowedMethods);
-
-        if (allowCredentials)
-            policy.AllowCredentials();
+        if (allowedOrigins is ["*"])
+        {
+            policy
+                .AllowAnyOrigin()
+                .WithHeaders(allowedHeaders)
+                .WithMethods(allowedMethods)
+                .DisallowCredentials(); // Explicitly disallow to avoid startup crash
+        }
         else
-            policy.DisallowCredentials();
+        {
+            policy
+                .WithOrigins(allowedOrigins)
+                .WithHeaders(allowedHeaders)
+                .WithMethods(allowedMethods);
+
+            if (allowCredentials)
+                policy.AllowCredentials();
+            else
+                policy.DisallowCredentials();
+        }
     });
 });
 

@@ -3,14 +3,12 @@ using S2Retro.Modules.RetroBoardLayout.Domain.Entities;
 
 namespace S2Retro.Infrastructure.Data;
 
-public class S2RetroDbContext : DbContext
+public class S2RetroDbContext(DbContextOptions<S2RetroDbContext> options) : DbContext(options)
 {
-    public S2RetroDbContext(DbContextOptions<S2RetroDbContext> options) : base(options) { }
-
-    public DbSet<Layout> Layouts { get; set; } = null!;
-    public DbSet<Column> Columns { get; set; } = null!;
-    public DbSet<Category> Categories { get; set; } = null!;
-    public DbSet<CategoryValue> Values { get; set; } = null!;
+    public DbSet<Layout> Layouts => Set<Layout>();
+    public DbSet<Column> Columns => Set<Column>();
+    public DbSet<Category> Categories => Set<Category>();
+    public DbSet<CategoryValue> CategoryValues => Set<CategoryValue>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -26,7 +24,7 @@ public class S2RetroDbContext : DbContext
             .HasOne(c => c.Category)
             .WithMany()
             .HasForeignKey(c => c.CategoryId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.SetNull);
 
         modelBuilder.Entity<Category>()
             .HasMany(c => c.Values)
