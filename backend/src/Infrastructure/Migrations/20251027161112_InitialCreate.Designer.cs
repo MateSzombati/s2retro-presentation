@@ -12,8 +12,8 @@ using S2Retro.Infrastructure.Data;
 namespace S2Retro.Infrastructure.Migrations
 {
     [DbContext(typeof(S2RetroDbContext))]
-    [Migration("20251018152439_AddRetroBoardLayout")]
-    partial class AddRetroBoardLayout
+    [Migration("20251027161112_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
