@@ -33,9 +33,9 @@
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Layout</mat-label>
               <mat-select formControlName="layout">
-                <mat-option *ngFor="let l of layouts" [value]="l.value">
-                  {{ l.label }}
-                </mat-option>
+                @for (layout of layouts; track $index) {
+                  <mat-option>{{layout.name}}</mat-option>    
+                }
               </mat-select>
             </mat-form-field>
           </div>

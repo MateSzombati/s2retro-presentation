@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -9,6 +9,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { of } from 'rxjs';
+import { LayoutReadDto, LayoutService } from '../../swagger';
 
 interface Layout {
   value: string;
@@ -46,39 +47,27 @@ export class ControllingComponent implements OnInit {
     filters: new FormControl('')
   });
 
-  layouts: Layout[] = [];
+  layoutService = inject(LayoutService);
+  layouts: LayoutReadDto[] = [];
   filterPlaceholder = 'Select a layout to see available filters';
 
   ngOnInit(): void {
-    this.getLayouts();
-    this.onLayoutChange();
+    
+    this.layoutService.apiLayoutGet().subscribe(layouts => this.layouts = layouts);
+    console.log(this.layouts);
   }
 
-  getLayouts(): void {
-    // Simulate fetching layouts from a service
-    of([
-      { value: 'board-layout', label: 'Board Layout', filters: ['Author', 'Date', 'Votes'] },
-      { value: 'compact', label: 'Compact', filters: ['Author', 'Date'] },
-      { value: 'detailed', label: 'Detailed', filters: ['Author', 'Date', 'Votes', 'Content'] }
-    ]).subscribe(layouts => {
-      this.layouts = layouts;
-      if (this.layouts.length > 0) {
-        this.form.get('layout')?.setValue(this.layouts[0].value);
-      }
-    });
-  }
-
-  onLayoutChange(): void {
-    this.form.get('layout')?.valueChanges.subscribe(layoutValue => {
-      const selectedLayout = this.layouts.find(l => l.value === layoutValue);
-      if (selectedLayout) {
-        this.filterPlaceholder = `Available filters: ${selectedLayout.filters.join(', ')}`;
-      } else {
-        this.filterPlaceholder = 'Select a layout to see available filters';
-      }
-      this.form.get('filters')?.setValue('');
-    });
-  }
+  // onLayoutChange(): void {
+  //   this.form.get('layout')?.valueChanges.subscribe(layoutValue => {
+  //     const selectedLayout = this.layouts.find(l => l.value === layoutValue);
+  //     if (selectedLayout) {
+  //       this.filterPlaceholder = `Available filters: ${selectedLayout.filters.join(', ')}`;
+  //     } else {
+  //       this.filterPlaceholder = 'Select a layout to see available filters';
+  //     }
+  //     this.form.get('filters')?.setValue('');
+  //   });
+  // }
 
   generateReport() {
     console.log('Form submitted:', this.form.value);
