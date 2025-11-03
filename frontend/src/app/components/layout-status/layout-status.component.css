@@ -1,0 +1,30 @@
+.segmented-control {
+  display: inline-flex;
+  background: #2b2b2b;
+  border-radius: 10px;
+  /* padding: 3px; */
+  font: Inter;
+}
+
+.segment {
+  border: none;
+  background: transparent;
+  padding: 8px 18px;
+  border-radius: 10px;
+  font-size: 12px;
+  cursor: pointer;
+  color: #606060;
+  transition: all 0.2s ease;
+}
+
+.segment:hover {
+  background: #43434347;
+}
+
+.segment.selected {
+  background: #373737;
+  /* box-shadow: 0 0 0 2px #4a4a4a; */
+  /* color: #98bf23; */
+  color: rgb(229, 229, 229);
+  font-weight: 600;
+}

@@ -1,0 +1,262 @@
+.dialog-container {
+    background-color: #141414;
+    font-family: Inter;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.dialog-header{
+    // justify-content: center;
+    align-items: center;
+    display: flex;
+    border-bottom: 1px solid #2B2E2E;
+    flex-shrink: 0;
+    height: 50px;
+}
+
+.close-btn {
+    background-color: transparent;
+    width: 30px;
+    height: 30px;
+    border-radius: 10px;
+    border: none;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    color: grey;
+    position: absolute;
+    right: 20px;
+}
+
+.close-btn:hover {
+    background-color: #33333342;
+    color: #98BF23;
+}
+
+
+
+.dialog-main-content {
+    padding: 0px 10px;
+    overflow: auto; 
+    padding-bottom: 10px;
+}
+
+
+.dialog-main-content-header {
+    display: flex;
+    align-items: center;
+    height: 45px;
+    padding: 0px 10px;
+}
+
+
+
+.dialog-types-row {
+    // border-bottom: 1px solid #2B2E2E;
+    height: 40px;
+    padding: 0px 10px;
+    align-items: center;
+    display: flex;
+    transition: all 0.2s ease-in-out;
+    border-radius: 10px;
+
+    font-size: 14px;
+}
+.dialog-types-row:hover {
+    background-color: #1f1f1f92;
+    cursor: pointer;
+}
+.dialog-types-row:hover .trash-icon {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+
+.item-text {
+    font-size: 13px;
+    font-weight: 400;
+    width: 280px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+.trash-icon{
+    border-radius: 7px;
+    transition: all 0.2s ease-in-out;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+    color: #AC1138;
+
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+.trash-icon:hover {
+    background-color: #29292992;
+}
+
+
+
+.edit-txt {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    color: #363636;
+    margin-left: 10px;
+    font-size: 13px;
+    font-family: Inter;
+}
+.dialog-types-row:hover .edit-txt {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+
+.type-dialog-button {
+    background-color: transparent;
+    border: none;
+    color: #808080;
+    // margin: 0px 10px;
+    align-items: center;
+    display: flex;
+    // width: calc(100% - 20px);
+    height: 30px;
+    width: 30px;
+    border-radius: 10px;
+    justify-content: center;
+    transition: all 0.2s ease;
+    font-size: 18px;
+}
+.type-dialog-button:hover {
+    background-color: #1f1f1f92;
+    cursor: pointer;
+}
+.type-dialog-button:active {
+    background-color: #1f1f1fdc;
+}
+
+
+
+
+
+.dialog-subitem-row {
+    // border-bottom: 1px solid #2B2E2E;
+    height: 40px;
+    padding: 0px 10px;
+    align-items: center;
+    display: flex;
+    transition: all 0.2s ease-in-out;
+    border-radius: 10px;
+
+    font-size: 14px;
+}
+.dialog-subitem-row:hover {
+    background-color: #1f1f1f92;
+    cursor: pointer;
+}
+.dialog-subitem-row:hover .trash-icon {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+
+
+.type-name-input{
+    background-color: transparent;
+    outline: none; 
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: Inter;
+    padding: 3px 12px;
+    border-radius: 12px;
+    width: 170px;
+    height: 25px;
+    margin: 10px 0px;
+    border: none;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    transition: all 0.2s ease-in-out;
+}
+.type-name-input:hover{
+    background-color: #1f1f1fd2;
+}
+.type-name-input:focus{
+    background-color: #1f1f1fd2;
+}
+.type-name-input::placeholder{
+    font-weight: 400;
+    font-size: 16px;
+}
+
+
+
+
+.subitem-name-input{
+    background-color: transparent;
+    outline: none; 
+    color: white;
+    font-size: 13px;
+    font-weight: 400;
+    font-family: Inter;
+    padding: 3px 12px;
+    border-radius: 12px;
+    width: 270px;
+    height: 25px;
+    border: none;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    transition: all 0.2s ease-in-out;
+}
+.subitem-name-input:hover{
+    background-color: #212121;
+}
+.subitem-name-input:focus{
+    background-color: #212121;
+}
+.subitem-name-input::placeholder{
+    font-weight: 400;
+    font-size: 16px;
+}
+
+
+
+
+
+
+
+.save-btn {
+  // border: 1px solid #98bf239a;
+  border: none;
+  background-color: transparent;
+  color: #808080;
+  font: Inter;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 10px;
+  height: 30px;
+  width: 90px;
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+.save-btn:hover {
+    background-color: #1f1f1f92;
+    cursor: pointer;
+}
+.save-btn:active {
+    background-color: #1f1f1fdc;
+    cursor: pointer;
+    transform: scale(0.95);
+}

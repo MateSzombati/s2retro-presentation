@@ -1,0 +1,17 @@
+<div class="dialog-container">
+    <h2>{{ data.title || 'Confirm' }}</h2>
+
+    <p style="color: #888888; font-size: 14px; margin-top: 5px; margin-bottom: 25px; text-align: center;">{{ data.message }}</p>
+
+    <div class="dialog-options">
+        <button class="cancel-btn" (click)="onCancel()">
+            {{ data.cancelText || 'Cancel' }}
+        </button>
+        <button class="ok-btn" color="primary" (click)="onOk()">
+            {{ data.okText || 'OK' }}
+        </button>
+    </div>
+
+</div>
+
+

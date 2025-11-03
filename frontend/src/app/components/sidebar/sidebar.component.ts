@@ -22,7 +22,7 @@ export class SidebarComponent implements OnInit {
   isSidebarCollapsed = false;
   showSidebarText = true;
 
- toggleSidebar() {
+ public toggleSidebar() {
     this.isSidebarCollapsed = !this.isSidebarCollapsed;
 
     // Toggle body class for global CSS styling
@@ -45,6 +45,12 @@ export class SidebarComponent implements OnInit {
     }
   }
 
+
+  public toggleDropdownFromParent() {
+    if(!this.isSidebarCollapsed) {
+      this.dropdownOpen = !this.dropdownOpen;
+    }
+  }
 
 
 
@@ -108,7 +114,6 @@ export class SidebarComponent implements OnInit {
   toggleDropdown(event: MouseEvent) {
     event.stopPropagation(); // Prevent parent click
     this.dropdownOpen = !this.dropdownOpen;
-
   }
 
   settingsClick(){

@@ -1,0 +1,15 @@
+<div class="segmented-control">
+  <button 
+    class="segment" 
+    [class.selected]="selected === 'active'" 
+    (click)="select('active')">
+    {{ activeLabel }}
+  </button>
+
+  <button 
+    class="segment" 
+    [class.selected]="selected === 'archived'" 
+    (click)="select('archived')">
+    {{ archivedLabel }}
+  </button>
+</div>

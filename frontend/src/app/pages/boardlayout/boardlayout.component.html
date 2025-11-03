@@ -1,56 +1,39 @@
 <div class="layout-container">
   <div class="head">
     <img src="../../../assets/icons/board_layout_green.png" alt="boardlayout icon" width="25px" style="margin-left: 18px; margin-right: 15px;">
-    <h1>Board Layout hinzufügen</h1>
+    <h1>Board Layout</h1>
+    <app-layout-status class="layout-status" (statusChange)="onStatusChange($event)"></app-layout-status>
+    <button class="add-layout-btn" (click)="addLayout()">
+          <p style="font-size: 15px; font-weight: 200; margin-right: 5px;">+</p>
+          <p>Add Layout</p>
+        </button>
+  </div>
+
+  <div class="table-container">
+    <div class="row-container">
+        <div class="grid-row">
+          <div class="grid-cell" style="padding-left: 10px;">
+            Layout Name
+          </div>
+          <div class="grid-cell">
+            Spalten
+          </div>
+          <div class="grid-cell">
+            
+          </div>
+        </div>
+      </div>
+
+      <app-layout-row 
+        *ngFor="let layout of layouts" 
+        [rowData]="layout" 
+        [columns]="columns"
+        [isArchiveView]="archivedView"
+        (onLayoutSave)="reloadLayouts()">
+      </app-layout-row>
   </div>
   
-  <div class="layout-head" *ngIf="displayEditLayout">
-        <button class="back-btn" (click)="goBack()">
-          <svg style="width: 20px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="white" class="size-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-          </svg>
-        </button>
-        <input class="layout-name-input" placeholder="Layout-Name" type="text" />
-        <button class="save-btn">Save Layout</button>
-        
-
-        <div class="zoom-controls">
-          <button style="position: absolute; left: 0;" class="zoom-button" (click)="zoomOut()">−</button>
-          <p class="zoom-text">{{zoomLevelDisplay}}%</p>
-          <button style="position: absolute; right: 0;" class="zoom-button" (click)="zoomIn()">+</button>
-        </div>
-  </div>
-
-  <div class="scrollable-box" *ngIf="displayEditLayout">
-    <div
-      class="scaled-wrapper"
-      [style.width.%]="100 * zoomLevel"
-    >
-      <app-add-edit-boardlayout [scale]="zoomLevel"></app-add-edit-boardlayout>
-    </div>
-  </div>
-
-  <div *ngIf="!displayEditLayout">
-    
-      <table class="custom-table">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Columns</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of items; let i = index"
-            (click)="onRowClick(i)"
-            class="table-row">
-          <td>{{ item.name }}</td>
-          <td>{{ item.columns }}</td>
-        </tr>
-      </tbody>
-    </table>
-
-
-  </div>
+  
 
 </div>
 

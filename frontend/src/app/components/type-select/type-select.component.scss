@@ -1,87 +1,107 @@
-.custom-select-wrapper {
-  position: relative;
-  width: 115px;
-  font-family: Inter;
-  font-size: 10px;
-  color: white;
-  user-select: none;
-}
-
+/* Container box */
 .custom-select-box {
-  background-color: #1C1D1D;
-  border: 0.1px solid #1c1d1d;
-  border-radius: 9px;
-  padding: 5px 7px;
-  cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: background-color 0.2s ease;
-  transition: background-color 0.2s ease;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  cursor: pointer;
+
+  width: 110px;
+//   padding: 12px 16px;
+  border-radius: 10px;
+  background-color: #262626;
+  // border: 1px solid #494949;
+
+
+  font-size: 10px;
+  font-weight: 500;
+  color: #A4A4A4;
+
+  height: 25px;
+  padding: 1px 10px;
+
+  transition: all 0.2s ease;
 }
 
+/* Hover effect */
 .custom-select-box:hover {
-  background-color: #232323;
+    background-color: #313131;
+}
+.custom-select-box:active {
+    background-color: #353535;
+    transform: scale(0.95);
 }
 
-.custom-select-box.active {
-  background-color: transparent;
-  border: 0.1px solid #1f2222;
+
+/* Dropdown icon */
+.dropdown-icon {
+  margin-left: 8px;
+  transition: transform 0.25s ease;
 }
 
+/* Rotate when open */
+.dropdown-icon.clicked {
+  transform: rotate(180deg);
+}
+
+/* Options container */
 .custom-options {
   position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  margin-top: 4px;
-  background-color: #1c1d1d;
-  border: 0.1px solid #1f2222;
-  border-radius: 9px;
-  z-index: 10;
-  overflow: hidden;
-  box-shadow: 0 2px 6px rgba(20, 20, 20, 0.4);
+  margin-top: 6px;
+  width: 200px;
+
+  background: #202020;
+  border: 1px solid #262626;
+  border-radius: 12px;
+//   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+
+  max-height: 220px;
+  overflow-y: auto;
+  z-index: 1000;
+
+  animation: fadeIn 0.2s ease;
 }
 
+/* Individual option */
 .custom-option {
-  padding: 5px 7px;
-  cursor: pointer;
-  text-align: left;
-  height: 15px;
-  transition: background-color 0.2s ease;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.custom-option:hover {
-  background-color: #232323;
-}
-
-.arrow {
-  margin-left: 5px;
+  padding: 10px 16px;
   font-size: 12px;
+  color: #A4A4A4;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/* Hover/active states */
+.custom-option:hover {
+  background-color: #2c2c2c;
+  color: #A4A4A4;
+}
+
+.custom-option:active {
+  background-color: #373737;
+  color: #A4A4A4;
+}
+
+/* Smooth fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 
-.dropdown-bottom-btn {
-  background-color: transparent;
-  color: white;
-  border: none;
-  padding: 6px 8px;
-  text-align: left;
-  cursor: pointer;
-  font-size: 11px;
-  font-weight: 600;
-  border-top: 1px solid #333;
-  transition: background-color 0.2s ease;
-  width: 100%;
-  height: 25px;
-
-  &:hover {
-    background-color: #333;
-  }
+.select-label {
+  width: 280px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;  
 }
