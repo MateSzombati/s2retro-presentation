@@ -1,12 +1,14 @@
-{
+﻿{
   "profiles": {
     "S2Retro.Api": {
       "commandName": "Project",
+      "dotnetRunMessages": true,
       "launchBrowser": true,
+      "launchUrl": "swagger",
+      "applicationUrl": "http://localhost:8080",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "applicationUrl": "https://localhost:60308;http://localhost:60309"
+      }
     }
   }
 }
