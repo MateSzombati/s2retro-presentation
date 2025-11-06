@@ -28,7 +28,7 @@ export class TypeSelectComponent implements OnInit, OnDestroy, ControlValueAcces
   selectedType: CategoryReadDto | null = null;
   selectedTypeName = "";
 
-  standardTypes = ['Freitext', 'Zahl', 'Datum'];
+  standardTypes = ['Text', 'Number', 'Date'];
   types: CategoryReadDto[] = [];
 
   @ViewChild('dropdownContainer', { read: ElementRef }) dropdownContainer!: ElementRef;
@@ -83,7 +83,7 @@ export class TypeSelectComponent implements OnInit, OnDestroy, ControlValueAcces
     this.currentValue = value;
 
     if (!value) {
-      this.setToFreitext();
+      this.setToText();
       return;
     }
 
@@ -94,7 +94,7 @@ export class TypeSelectComponent implements OnInit, OnDestroy, ControlValueAcces
     // }
 
     if (value.type !== null && value.type !== undefined) {
-      this.selectedTypeName = this.standardTypes[value.type] ?? 'Freitext';
+      this.selectedTypeName = this.standardTypes[value.type] ?? 'Text';
       this.selectedType = null;
       return;
     }
@@ -106,11 +106,11 @@ export class TypeSelectComponent implements OnInit, OnDestroy, ControlValueAcces
       return;
     }
 
-    this.setToFreitext();
+    this.setToText();
   }
 
-  private setToFreitext() {
-    this.selectedTypeName = 'Freitext';
+  private setToText() {
+    this.selectedTypeName = 'Text';
     this.selectedType = null;
   }
 

@@ -390,6 +390,11 @@ th {
     cursor: pointer;
     transform: scale(0.95);
 }
+.add-col-btn:disabled {
+    background-color: transparent;
+    cursor: default;
+    color: #424242;
+}
 
 
 

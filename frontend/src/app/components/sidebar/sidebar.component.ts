@@ -65,8 +65,8 @@ export class SidebarComponent implements OnInit {
 
 
   sidebarItems = [
-    { name: '', label: 'Überblick', icon: 'assets/icons/überblick_normal.png' },
-    { name: 'boardlayout', label: 'Board Layout', icon: 'assets/icons/board_layout_normal.png' },
+    { name: '', label: 'Home', icon: 'assets/icons/überblick_normal.png' },
+    { name: 'boardlayout', label: 'Board Layouts', icon: 'assets/icons/board_layout_normal.png' },
     { name: 'controlling', label: 'Controlling', icon: 'assets/icons/controlling_normal.png' },
     { name: 'retroboard', label: 'Retro Boards', icon: 'assets/icons/boards_normal.png' },
     { name: 'changeLog', label: 'Change Log', icon: 'assets/icons/log_normal.png' }

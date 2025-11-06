@@ -47,8 +47,8 @@
 
 .ok-btn {
   border: none;
-  background-color: #1847b6;
-  color: #ffffff;
+  background-color: #98BF23;
+  color: white;
   font: Inter;
   font-size: 12px;
   font-weight: 600;
@@ -63,11 +63,11 @@
   transition: all 0.2s ease;
 }
 .ok-btn:hover {
-    background-color: #1a4dc6;
+    background-color: #a8d327;
     cursor: pointer;
 }
 .ok-btn:active {
-    background-color: #1a4dc6;
+    background-color: #a8d327;
     cursor: pointer;
     transform: scale(0.95);
 }

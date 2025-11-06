@@ -25,7 +25,9 @@ export class LayoutRowComponent {
 
   @Output() onLayoutSave = new EventEmitter<void>();
 
+  maxColumns = 8;
   columnsCounter = this.rowData.columns?.length;
+  addColumnDisabled = false;
 
   @Input() isArchiveView: boolean = false;
 
@@ -37,6 +39,7 @@ export class LayoutRowComponent {
 
   ngOnInit() {
     this.columnsCounter = this.rowData.columns?.length;
+    this.checkIfColumnLimit();
   }
   
   isExpanded = false;
@@ -49,10 +52,12 @@ export class LayoutRowComponent {
   onAddColumnClick() {
     this.columnsCounter = this.columnsCounter!+1;
     this.child.onAddColumn();
+    this.checkIfColumnLimit();
   }
 
   onDeleteColumn(value: number) {
     this.columnsCounter = value;
+    this.checkIfColumnLimit();
   }
 
   restoreLayout() {
@@ -108,6 +113,15 @@ export class LayoutRowComponent {
       error: (err) => console.error(err)
     });
     
+  }
+
+  checkIfColumnLimit() {
+    if(this.columnsCounter! >= this.maxColumns){
+      this.addColumnDisabled = true;
+    }
+    else {
+      this.addColumnDisabled = false;
+    }
   }
 
   selectAllText(event: FocusEvent) {
