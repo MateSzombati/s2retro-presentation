@@ -9,13 +9,10 @@
  */
 
 
-export const ColumnType = {
+export const InstancePhase = {
     NUMBER_0: 0,
     NUMBER_1: 1,
-    NUMBER_2: 2,
-    NUMBER_3: 3,
-    NUMBER_4: 4,
-    NUMBER_5: 5
+    NUMBER_2: 2
 } as const;
-export type ColumnType = typeof ColumnType[keyof typeof ColumnType];
+export type InstancePhase = typeof InstancePhase[keyof typeof InstancePhase];
 

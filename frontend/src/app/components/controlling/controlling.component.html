@@ -9,54 +9,86 @@
       <div class="card">
         <h2>Create Report</h2>
 
-        <form [formGroup]="form" (ngSubmit)="generateReport()" class="report-form">
+        <div class="report-form">
 
           <div class="form-row">
             <mat-form-field appearance="outline">
               <mat-label>Start Date</mat-label>
-              <input matInput [matDatepicker]="startPicker" formControlName="startDate">
+              <input matInput [matDatepicker]="startPicker" [(ngModel)]="startDate" (dateChange)="onDateChange()">
               <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
               <mat-datepicker #startPicker></mat-datepicker>
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>End Date</mat-label>
-              <input matInput [matDatepicker]="endPicker" formControlName="endDate">
+              <input matInput [matDatepicker]="endPicker" [(ngModel)]="endDate" (dateChange)="onDateChange()">
               <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
               <mat-datepicker #endPicker></mat-datepicker>
             </mat-form-field>
 
-            <mat-checkbox formControlName="onlyClosed" class="only-closed-checkbox">Only closed boards</mat-checkbox>
+            <mat-checkbox [(ngModel)]="onlyClosed" class="only-closed-checkbox">Only closed boards</mat-checkbox>
           </div>
 
           <div class="form-row">
             <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Layout</mat-label>
-              <mat-select formControlName="layout">
-                @for (layout of layouts; track $index) {
-                  <mat-option>{{layout.name}}</mat-option>    
+              <mat-label>Board</mat-label>
+              <mat-select [(ngModel)]="selectedBoard" (selectionChange)="onBoardSelectionChange()">
+                @for (board of filteredBoards; track board.id) {
+                  <mat-option [value]="board">{{board.name}}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Instance</mat-label>
+              <mat-select [(ngModel)]="selectedInstance" [disabled]="!selectedBoard" (selectionChange)="onInstanceSelectionChange()">
+                @for (instance of filteredInstances; track instance.id) {
+                  <mat-option [value]="instance">{{instance.name}}</mat-option>
                 }
               </mat-select>
             </mat-form-field>
           </div>
 
+          <!-- Instance Elements Table -->
+          @if (selectedInstance) {
+            <div class="filter-box">
+              <div class="filter-title">Instance Elements</div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Select</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (element of selectedInstanceElements; track element.id) {
+                    <tr>
+                      <td>
+                        <mat-checkbox 
+                          [checked]="checkedElements.has(element.id!)" 
+                          (change)="toggleElementSelection(element.id!)">
+                        </mat-checkbox>
+                      </td>
+                      <td>{{ getElementName(element) }}</td>
+                      <td>{{ getElementType(element) }}</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          }
+
           <!-- Filter Options -->
-          <div class="filter-box">
-            <div class="filter-title">*Filter Options</div>
-            <textarea
-              matInput
-              formControlName="filters"
-              [placeholder]="filterPlaceholder"
-            ></textarea>
-          </div>
+          
 
           <!-- Actions -->
           <div class="actions">
-            <button class="btn-primary">
+            <button class="btn-primary" (click)="generateReport()">
               Generate Report
             </button>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   </section>
