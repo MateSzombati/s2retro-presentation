@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 import { filter } from 'rxjs/operators';
 
 @Component({
@@ -13,105 +13,83 @@ import { filter } from 'rxjs/operators';
 export class SidebarComponent implements OnInit {
   activeRoute: string = '';
 
-  isSelected = false;
-
   constructor(private router: Router, private sanitizer: DomSanitizer) {
     this.activeRoute = this.router.url;
   }
 
   isSidebarCollapsed = false;
   showSidebarText = true;
-
- toggleSidebar() {
-    this.isSidebarCollapsed = !this.isSidebarCollapsed;
-
-    // Toggle body class for global CSS styling
-    if (this.isSidebarCollapsed) {
-      document.body.classList.add('sidebar-collapsed');
-      document.body.classList.remove('sidebar-expanded');
-      this.showSidebarText = false;
-
-      this.dropdownOpen = false;
-
-    } else {
-      document.body.classList.remove('sidebar-collapsed');
-      document.body.classList.add('sidebar-expanded');
-
-      // this.dropdownOpen = true;
-
-      setTimeout(() => {
-        this.showSidebarText = true;
-      }, 100); // match transition duration
-    }
-  }
-
-
-
-
-  navigateTo(item: any) {
-    
-  }
-
-
-  getSanitizedSvg(svgString: string): SafeHtml {
-    return this.sanitizer.bypassSecurityTrustHtml(svgString);
-  }
-
+  dropdownOpen = false;
+  selectedItem: string | null = '';
+  isSettingsClicked = false;
 
   sidebarItems = [
-    { name: '', label: 'Überblick', icon: 'assets/icons/überblick_normal.png' },
-    { name: 'boardlayout', label: 'Board Layout', icon: 'assets/icons/board_layout_normal.png' },
+    { name: '', label: 'Home', icon: 'assets/icons/überblick_normal.png' },
+    { name: 'boardlayout', label: 'Board Layouts', icon: 'assets/icons/board_layout_normal.png' },
     { name: 'controlling', label: 'Controlling', icon: 'assets/icons/controlling_normal.png' },
-    { name: 'retroboard', label: 'Retro Boards', icon: 'assets/icons/boards_normal.png' },
     { name: 'changeLog', label: 'Change Log', icon: 'assets/icons/log_normal.png' }
   ];
 
   boardItems = [
-    { name: 'retroQ1', label: 'Retro Q1', icon: 'assets/icons/board_item_icon.png', hover: false  },
-    { name: 'retroQ2', label: 'Retro Q2', icon: 'assets/icons/board_item_icon.png', hover: false  },
-    { name: 'retroQ3', label: 'Retro Q2', icon: 'assets/icons/board_item_icon.png', hover: false  },
-    { name: 'retroQ4', label: 'Retro Q4', icon: 'assets/icons/board_item_icon.png', hover: false  },
-    { name: 'retroQ5', label: 'Retro Q5', icon: 'assets/icons/board_item_icon.png', hover: false  },
-    { name: 'retroQ6', label: 'Retro Q6', icon: 'assets/icons/board_item_icon.png', hover: false  },
-    { name: 'retroQ7', label: 'Retro Q7', icon: 'assets/icons/board_item_icon.png', hover: false  },
-    { name: 'retroQ8', label: 'Retro Q8', icon: 'assets/icons/board_item_icon.png', hover: false  },
-    { name: 'retroQ9', label: 'Retro Q9', icon: 'assets/icons/board_item_icon.png', hover: false  },
-    { name: 'retroQ10', label: 'Retro 10', icon: 'assets/icons/board_item_icon.png', hover: false  },
-    { name: 'retroQ11', label: 'Retro Q11', icon: 'assets/icons/board_item_icon.png', hover: false  },
-    { name: 'retroQ12', label: 'Retro Q12', icon: 'assets/icons/board_item_icon.png', hover: false  },
+    { name: 'retroQ1', label: 'Retro Q1', icon: 'assets/icons/board_item_icon.png', hover: false },
+    { name: 'retroQ2', label: 'Retro Q2', icon: 'assets/icons/board_item_icon.png', hover: false },
+    { name: 'retroQ3', label: 'Retro Q3', icon: 'assets/icons/board_item_icon.png', hover: false },
+    { name: 'retroQ4', label: 'Retro Q4', icon: 'assets/icons/board_item_icon.png', hover: false },
+    { name: 'retroQ5', label: 'Retro Q5', icon: 'assets/icons/board_item_icon.png', hover: false },
+    { name: 'retroQ6', label: 'Retro Q6', icon: 'assets/icons/board_item_icon.png', hover: false },
+    { name: 'retroQ7', label: 'Retro Q7', icon: 'assets/icons/board_item_icon.png', hover: false },
+    { name: 'retroQ8', label: 'Retro Q8', icon: 'assets/icons/board_item_icon.png', hover: false },
+    { name: 'retroQ9', label: 'Retro Q9', icon: 'assets/icons/board_item_icon.png', hover: false },
+    { name: 'retroQ10', label: 'Retro 10', icon: 'assets/icons/board_item_icon.png', hover: false },
+    { name: 'retroQ11', label: 'Retro Q11', icon: 'assets/icons/board_item_icon.png', hover: false },
+    { name: 'retroQ12', label: 'Retro Q12', icon: 'assets/icons/board_item_icon.png', hover: false },
   ];
 
-  selectedItem: string | null = '';
-  dropdownOpen = false;
-  isSettingsClicked = false;
+  toggleSidebar() {
+    this.isSidebarCollapsed = !this.isSidebarCollapsed;
 
+    if (this.isSidebarCollapsed) {
+      document.body.classList.add('sidebar-collapsed');
+      document.body.classList.remove('sidebar-expanded');
+      this.showSidebarText = false;
+      this.dropdownOpen = false;
+    } else {
+      document.body.classList.remove('sidebar-collapsed');
+      document.body.classList.add('sidebar-expanded');
 
-  onSelectItem(item: any) {
-    this.selectedItem = item.name;
-    this.isSettingsClicked = false;
-
-    console.log(item);
-
-    
-    this.router.navigate(['/' + this.selectedItem]);
-
-
+      setTimeout(() => {
+        this.showSidebarText = true;
+      }, 100);
+    }
   }
 
+  toggleDropdownFromParent() {
+    if (!this.isSidebarCollapsed) {
+      this.dropdownOpen = !this.dropdownOpen;
+    }
+    else {
+      this.toggleSidebar();
+      this.dropdownOpen = !this.dropdownOpen;
+    }
+  }
+
+  onSelectItem(item: any) {
+  if (item?.name == null) return;
+  this.selectedItem = item.name;
+  this.isSettingsClicked = false;
+  this.router.navigate(['/' + item.name]);
+}
 
   onAddBoard(event: MouseEvent) {
     event.stopPropagation();
-    this.selectedItem = 'retroboard';
     this.router.navigate(['/createboard']);
   }
 
-  toggleDropdown(event: MouseEvent) {
-    event.stopPropagation(); // Prevent parent click
-    this.dropdownOpen = !this.dropdownOpen;
-
+  onBoardItemAction(item: any) {
+    console.log('Action triggered for:', item);
   }
 
-  settingsClick(){
+  settingsClick() {
     this.router.navigate(['/settings']);
     this.selectedItem = null;
     this.isSettingsClicked = true;
@@ -121,12 +99,7 @@ export class SidebarComponent implements OnInit {
     return text ? text.charAt(0).toUpperCase() : '';
   }
 
-  onBoardItemAction(item: any) {
-    console.log('Action triggered for:', item);
-  }
-
-
-  onSidebarLogoClick(){
+  onSidebarLogoClick() {
     this.router.navigate(['/']);
     this.selectedItem = '';
   }
@@ -147,6 +120,4 @@ export class SidebarComponent implements OnInit {
         }
       });
   }
-
-
 }

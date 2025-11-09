@@ -1,27 +1,8 @@
-
-// Custom Theming for Angular Material
-// For more information: https://material.angular.dev/guide/theming
-@use '@angular/material' as mat;
-
-html {
-  @include mat.theme((
-    color: (
-      theme-type: dark,
-      primary: mat.$azure-palette,
-      tertiary: mat.$blue-palette,
-    ),
-    typography: Roboto,
-    density: 0,
-  ));
-}/* You can add global styles to this file, and also import other style files */
-
-
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 body {
   background-color: #18191A;
-  font-family: Inter;
+  font-family: Inter, sans-serif;
   color: white;
   padding: 0px;
 }
@@ -32,24 +13,24 @@ html, body {
 
   scrollbar-width: thin;
   scrollbar-color: #3b3b3b #13141599;
+}
 
-  &::-webkit-scrollbar {
-    height: 3px;
-    width: 1px;
-  }
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  height: 3px;
+  width: 1px;
+}
 
-  &::-webkit-scrollbar-track {
-    background: #131616;
-  }
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track {
+  background: #131616;
+}
 
-  &::-webkit-scrollbar-thumb {
-    background-color: #3a3a3a;
-    border-radius: 1px;
-    border: 1px solid #131616;
-  }
-
-
-
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb {
+  background-color: #3a3a3a;
+  border-radius: 1px;
+  border: 1px solid #131616;
 }
 
 h1 {
@@ -59,7 +40,6 @@ h1 {
 h2 {
   font-size: 17px;
 }
-
 
 /* Default (sidebar expanded) */
 .sidebar {
@@ -80,10 +60,3 @@ h2 {
 .sidebar-collapsed .main-content {
   padding-left: 60px;
 }
-
-
-
-
-
-
-
