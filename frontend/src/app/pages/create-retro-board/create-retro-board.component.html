@@ -1,0 +1,54 @@
+<div class="head">
+  <h1>Create New Retro Board</h1>
+  <button class="add-board-btn" (click)="createBoard()">
+    <p style="font-size: 15px; margin-left: 10px; height: 10px; margin-top: 10px;">+</p>
+    <p>Create</p>
+  </button>
+</div>
+
+<div class="main-content">
+  <div class="main-content-side left-side">
+    
+    <div class="options-container">
+        <h2>Board Name</h2>
+        <input style="width: 350px;" class="board-name-input" placeholder="Enter board name" type="text" [(ngModel)]="boardName" />
+
+        <div class="date-section">
+            <div>
+                <h2 style="margin-top: 30px;">Start</h2>
+                <app-custom-date-select datePlaceholder="Today" (selectDate)="onSelectStartDate($event)"></app-custom-date-select>
+            </div>
+            <div>
+                <h2 style="margin-top: 30px;">End</h2>
+                <app-custom-date-select datePlaceholder="Today + 3W" (selectDate)="onSelectEndDate($event)"></app-custom-date-select>
+            </div>
+        </div>
+
+        <h2 style="margin-top: 30px;">Board Layout</h2>
+
+        <div style="width: 300px !important;">
+          <app-custom-select [items]="layouts" (select)="onLayoutSelect($event)"></app-custom-select>
+        </div>
+
+        <h2 style="margin-top: 30px;">Add Users</h2>
+        <div style="display: flex; flex-direction: row; gap: 10px;">
+          <input style="width: 300px;" class="board-name-input" placeholder="Enter username" type="text" />
+          <button class="add-user-btn" (click)="onAddUser()">Add</button>
+        </div>
+
+        <hr style="border: none; height: 0.5px; background: #2d2e2e; margin-top: 30px; margin-bottom: 20px;">
+
+        <div class="user-list-container">
+          
+        </div>
+
+
+        
+    </div>
+
+  </div>
+
+  <div class="main-content-side right-side">
+    <img class="example-img" src="assets/images/table.png" alt="Example Image">
+  </div>
+</div>

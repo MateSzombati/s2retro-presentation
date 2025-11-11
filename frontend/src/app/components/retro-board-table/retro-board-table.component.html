@@ -1,0 +1,263 @@
+<div [ngStyle]="{ transform: 'scale(' + scale + ')', 'transform-origin': 'top left' }" class="retro-board-table-container">
+    
+    <div class="main-container">
+        <table class="table-container">
+            <thead>
+                <tr class="table-head" cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="dropColumn($event)" >
+                    
+                    @for (col of table_layout.columns; track col.column_id; let i = $index) {
+                        <th cdkDrag [cdkDragDisabled]="isDragDisabled" class="resizable-box" [ngStyle]="{ width: col.width + 'px' }" >
+                            <div class="resizer" (mousedown)="startResize($event, i)" (mouseenter)="disableDrag()" (mouseleave)="enableDrag()" ></div>
+
+                            <div class="table-header-col">
+                                <p class="col-title">{{col.column_title}}</p>
+                                <div class="type-card">{{col.type}}</div>
+                            </div>
+                        </th>
+                    }
+
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr class="table-row">
+                    @for (col of table_layout.columns; track col.column_id) {
+                        <td class="table-body-col" [ngStyle]="{ width: col.width + 'px' }">
+                            
+                            @switch (col.type) {
+                                @case ('Freitext') {
+                                    <app-freetext></app-freetext>
+                                }
+                                @case ('Zahl') {
+                                    <app-number></app-number>
+                                }
+                                @case ('Datum') {
+                                    <app-date></app-date>
+                                }
+                                @case ('MoodSelect') {
+                                    <app-mood></app-mood>
+                                }
+                            }
+
+                        </td>
+                    }
+                </tr>
+
+                <tr class="table-row">
+                    @for (col of table_layout.columns; track col.column_id) {
+                        <td class="table-body-col" [ngStyle]="{ width: col.width + 'px' }">
+                            
+                            @switch (col.type) {
+                                @case ('Freitext') {
+                                    <app-freetext></app-freetext>
+                                }
+                                @case ('Zahl') {
+                                    <app-number></app-number>
+                                }
+                                @case ('Datum') {
+                                    <app-date></app-date>
+                                }
+                                @case ('MoodSelect') {
+                                    <app-mood></app-mood>
+                                }
+                            }
+
+                        </td>
+                    }
+                </tr>
+
+                <tr class="table-row">
+                    @for (col of table_layout.columns; track col.column_id) {
+                        <td class="table-body-col" [ngStyle]="{ width: col.width + 'px' }">
+                            
+                            @switch (col.type) {
+                                @case ('Freitext') {
+                                    <app-freetext></app-freetext>
+                                }
+                                @case ('Zahl') {
+                                    <app-number></app-number>
+                                }
+                                @case ('Datum') {
+                                    <app-date></app-date>
+                                }
+                                @case ('MoodSelect') {
+                                    <app-mood></app-mood>
+                                }
+                            }
+
+                        </td>
+                    }
+                </tr>
+
+                <tr class="table-row">
+                    @for (col of table_layout.columns; track col.column_id) {
+                        <td class="table-body-col" [ngStyle]="{ width: col.width + 'px' }">
+                            
+                            @switch (col.type) {
+                                @case ('Freitext') {
+                                    <app-freetext></app-freetext>
+                                }
+                                @case ('Zahl') {
+                                    <app-number></app-number>
+                                }
+                                @case ('Datum') {
+                                    <app-date></app-date>
+                                }
+                                @case ('MoodSelect') {
+                                    <app-mood></app-mood>
+                                }
+                            }
+
+                        </td>
+                    }
+                </tr>
+
+                <tr class="table-row">
+                    @for (col of table_layout.columns; track col.column_id) {
+                        <td class="table-body-col" [ngStyle]="{ width: col.width + 'px' }">
+                            
+                            @switch (col.type) {
+                                @case ('Freitext') {
+                                    <app-freetext></app-freetext>
+                                }
+                                @case ('Zahl') {
+                                    <app-number></app-number>
+                                }
+                                @case ('Datum') {
+                                    <app-date></app-date>
+                                }
+                                @case ('MoodSelect') {
+                                    <app-mood></app-mood>
+                                }
+                            }
+
+                        </td>
+                    }
+                </tr>
+
+                <tr class="table-row">
+                    @for (col of table_layout.columns; track col.column_id) {
+                        <td class="table-body-col" [ngStyle]="{ width: col.width + 'px' }">
+                            
+                            @switch (col.type) {
+                                @case ('Freitext') {
+                                    <app-freetext></app-freetext>
+                                }
+                                @case ('Zahl') {
+                                    <app-number></app-number>
+                                }
+                                @case ('Datum') {
+                                    <app-date></app-date>
+                                }
+                                @case ('MoodSelect') {
+                                    <app-mood></app-mood>
+                                }
+                            }
+
+                        </td>
+                    }
+                </tr>
+
+                <tr class="table-row">
+                    @for (col of table_layout.columns; track col.column_id) {
+                        <td class="table-body-col" [ngStyle]="{ width: col.width + 'px' }">
+                            
+                            @switch (col.type) {
+                                @case ('Freitext') {
+                                    <app-freetext></app-freetext>
+                                }
+                                @case ('Zahl') {
+                                    <app-number></app-number>
+                                }
+                                @case ('Datum') {
+                                    <app-date></app-date>
+                                }
+                                @case ('MoodSelect') {
+                                    <app-mood></app-mood>
+                                }
+                            }
+
+                        </td>
+                    }
+                </tr>
+
+                <tr class="table-row">
+                    @for (col of table_layout.columns; track col.column_id) {
+                        <td class="table-body-col" [ngStyle]="{ width: col.width + 'px' }">
+                            
+                            @switch (col.type) {
+                                @case ('Freitext') {
+                                    <app-freetext></app-freetext>
+                                }
+                                @case ('Zahl') {
+                                    <app-number></app-number>
+                                }
+                                @case ('Datum') {
+                                    <app-date></app-date>
+                                }
+                                @case ('MoodSelect') {
+                                    <app-mood></app-mood>
+                                }
+                            }
+
+                        </td>
+                    }
+                </tr>
+
+                <tr class="table-row">
+                    @for (col of table_layout.columns; track col.column_id) {
+                        <td class="table-body-col" [ngStyle]="{ width: col.width + 'px' }">
+                            
+                            @switch (col.type) {
+                                @case ('Freitext') {
+                                    <app-freetext></app-freetext>
+                                }
+                                @case ('Zahl') {
+                                    <app-number></app-number>
+                                }
+                                @case ('Datum') {
+                                    <app-date></app-date>
+                                }
+                                @case ('MoodSelect') {
+                                    <app-mood></app-mood>
+                                }
+                            }
+
+                        </td>
+                    }
+                </tr>
+
+                <tr class="table-row">
+                    @for (col of table_layout.columns; track col.column_id) {
+                        <td class="table-body-col" [ngStyle]="{ width: col.width + 'px' }">
+                            
+                            @switch (col.type) {
+                                @case ('Freitext') {
+                                    <app-freetext></app-freetext>
+                                }
+                                @case ('Zahl') {
+                                    <app-number></app-number>
+                                }
+                                @case ('Datum') {
+                                    <app-date></app-date>
+                                }
+                                @case ('MoodSelect') {
+                                    <app-mood></app-mood>
+                                }
+                            }
+
+                        </td>
+                    }
+                </tr>
+                
+            </tbody>
+        </table>
+
+        <button class="add-row-btn" (click)="addRow()">
+            <p style="font-size: 18px;">+</p>
+            <p>Hinzufügen</p>
+        </button>
+
+    </div>
+
+</div>

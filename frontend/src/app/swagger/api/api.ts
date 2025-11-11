@@ -1,0 +1,15 @@
+export * from './board.service';
+import { BoardService } from './board.service';
+export * from './instance.service';
+import { InstanceService } from './instance.service';
+export * from './instanceCategory.service';
+import { InstanceCategoryService } from './instanceCategory.service';
+export * from './instanceCategoryValue.service';
+import { InstanceCategoryValueService } from './instanceCategoryValue.service';
+export * from './instanceCell.service';
+import { InstanceCellService } from './instanceCell.service';
+export * from './instanceColumn.service';
+import { InstanceColumnService } from './instanceColumn.service';
+export * from './instanceRow.service';
+import { InstanceRowService } from './instanceRow.service';
+export const APIS = [BoardService, InstanceService, InstanceCategoryService, InstanceCategoryValueService, InstanceCellService, InstanceColumnService, InstanceRowService];

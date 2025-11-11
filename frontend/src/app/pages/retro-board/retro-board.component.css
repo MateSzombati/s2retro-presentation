@@ -1,0 +1,96 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+:host { /* if this is an Angular component */
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* fill full screen height */
+}
+
+.head {
+  border-bottom: 0.1px solid #1F2222;
+  width: 100%;
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-shrink: 0; /* prevent shrinking */
+}
+
+/* your existing styles */
+.board-letter-icon {
+  width: 25px;
+  height: 25px;
+  background-color: #98BF23;
+  border-radius: 8px;
+  margin-left: 20px;
+  margin-right: 15px;
+  font-size: 16px;
+  font-weight: 800;
+  color: #131616;
+  text-align: center;
+  align-content: center;
+}
+
+.phase-container {
+  padding: 8px 8px;
+  background-color: #6D2F2F;
+  color: #FFD9D9;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 9px;
+  font-weight: 600;
+  border-radius: 100px;
+  height: 6px;
+  margin-left: 20px;
+}
+.phase-container:hover {
+  background-color: #7d3535;
+  cursor: default;
+}
+
+.phase-ball {
+  border-radius: 100px;
+  width: 5px;
+  height: 5px;
+  background-color: #FFD9D9;
+  margin-right: 5px;
+}
+
+.layout-container {
+  padding: 8px 8px;
+  background-color: #2F6D68;
+  color: #E3FEFF;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 9px;
+  font-weight: 600;
+  border-radius: 100px;
+  height: 6px;
+  margin-left: 20px;
+}
+.layout-container:hover {
+  background-color: #357c75;
+  cursor: default;
+}
+
+.main-container {
+  flex: 1; /* take remaining space */
+  /* background-color: #161717; */
+  display: flex;
+  flex-direction: column;
+  min-height: 0; /* important for flex scroll */
+}
+
+.scrollable-box {
+  flex: 1 1 auto;
+  overflow: auto;
+  min-width: 0;
+  min-height: 0;
+  position: relative;
+}

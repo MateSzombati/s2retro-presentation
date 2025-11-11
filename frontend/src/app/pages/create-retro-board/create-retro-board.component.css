@@ -1,0 +1,133 @@
+/* Header */
+.head {
+  border-bottom: 0.1px solid #292b2b;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding-left: 25px;
+}
+
+.main-content {
+  display: flex;
+  height: calc(99vh - 50px);
+  overflow: hidden;
+  padding-left: 50px;
+}
+
+.options-container {
+    width: fit-content;
+}
+
+.main-content-side {
+  flex: 1;
+  padding-bottom: 30px;
+}
+
+.left-side{
+    padding-right: 30px;
+    padding-top: 20px;
+}
+
+.right-side {
+    padding-top: 30px;
+    flex: 1.35;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: left !important;
+}
+
+.example-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: left center;
+}
+
+
+
+
+.board-name-input{
+    background-color: transparent;
+    outline: none; 
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: Inter;
+    padding: 3px 15px;
+    border-radius: 12px;
+    height: 29px;
+    border: #262626 solid 0.1px;
+    transition: all 0.2s ease;
+}
+.board-name-input:hover{
+    background-color: #1f1f1fcb;
+}
+.board-name-input:focus{
+    background-color: #1f1f1fcb;
+}
+.board-name-input::placeholder{
+    font-weight: 400;
+    font-size: 14px;
+}
+
+
+
+
+.date-section {
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+}
+
+
+
+.add-user-btn {
+  width: 80px;
+  height: 35px;
+  background-color: #262626;
+  border: none;
+  border-radius: 10px;
+  color: #A4A4A4;
+  transition: all 0.2s ease;
+}
+
+.add-user-btn:hover {
+  background-color: #2e2e2e;
+  cursor: pointer;
+}
+
+.add-user-btn:active {
+  background-color: #3a3a3a;
+}
+
+
+
+.add-board-btn {
+  width: 90px;
+  height: 25px;
+  background-color: #98BF23;
+  border: none;
+  border-radius: 10px;
+  color: #161717;
+  transition: all 0.2s ease;
+  font: Inter;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  flex-direction: row ;
+  align-items: center;
+  gap: 7px;
+  position: absolute;
+  right: 20px;
+}
+
+.add-board-btn:hover {
+  background-color: #add929;
+  cursor: pointer;
+}
+
+.add-board-btn:active {
+  background-color: #add929;
+  transform: scale(0.98);
+}

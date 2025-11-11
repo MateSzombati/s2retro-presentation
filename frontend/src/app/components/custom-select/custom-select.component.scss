@@ -1,0 +1,99 @@
+/* Container box */
+.custom-select-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+
+  width: 300px;
+//   padding: 12px 16px;
+  border-radius: 12px;
+  background-color: #232323;
+
+  font-size: 13px;
+  font-weight: 500;
+  color: #A4A4A4;
+
+  height: 30px;
+  padding: 3px 15px;
+
+  transition: all 0.2s ease;
+}
+
+/* Hover effect */
+.custom-select-box:hover {
+    background-color: #292929;
+}
+
+
+/* Dropdown icon */
+.dropdown-icon {
+  margin-left: 8px;
+  transition: transform 0.25s ease;
+}
+
+/* Rotate when open */
+.dropdown-icon.clicked {
+  transform: rotate(180deg);
+}
+
+/* Options container */
+.custom-options {
+  position: absolute;
+  margin-top: 6px;
+  width: 330px;
+
+  background: #202020;
+  border: 1px solid #262626;
+  border-radius: 12px;
+//   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+
+  max-height: 220px;
+  overflow-y: auto;
+  z-index: 1000;
+
+  animation: fadeIn 0.2s ease;
+}
+
+/* Individual option */
+.custom-option {
+  padding: 10px 16px;
+  font-size: 12px;
+  color: #A4A4A4;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/* Hover/active states */
+.custom-option:hover {
+  background-color: #2c2c2c;
+  color: #A4A4A4;
+}
+
+.custom-option:active {
+  background-color: #373737;
+  color: #A4A4A4;
+}
+
+/* Smooth fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+.select-label {
+  width: 280px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;  
+}
