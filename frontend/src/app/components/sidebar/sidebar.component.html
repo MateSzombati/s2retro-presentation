@@ -53,7 +53,7 @@
 
     @if (dropdownOpen) {
       <div class="sidebar-board-item-section">
-        @for (subItem of boardItems; track subItem.name) {
+        @for (subItem of boardItems(); track subItem.id) {
           <div class="sidebar-item board-hover-wrapper"
                [class.clicked]="selectedItem === subItem.name"
                (click)="onSelectItem(subItem)"
