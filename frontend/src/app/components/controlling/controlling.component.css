@@ -1,7 +1,14 @@
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
 
-.controlling-container {
+:host {
+  display: block;
+  padding: 2rem;
+  background-color: #18191a;
+}
 
+.controlling-container {
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .title {
@@ -9,94 +16,190 @@
   align-items: center;
   gap: 12px;
   color: #fff;
-  margin-bottom: 20px; /* Add some space below the title */
+  margin-bottom: 2rem; /* Increased space */
 }
 
-.container {
-  display: flex;
-  justify-content: center;
+.title h1 {
+  font-size: 2.25rem; /* Larger title */
+  font-weight: 600;
 }
 
 .card {
-  width: 100%;
-  max-width: 980px;
   color: #fff;
-  background-color: #1E1F21; /* Slightly lighter card background */
-  border-radius: 16px; /* Larger radius */
-  padding: 32px; /* More padding */
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background-color: #1E1F21;
+  border-radius: 16px;
+  padding: 2rem; /* Consistent padding */
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .card h2 {
   color: #fff;
-  margin: 0 0 24px 0; /* More space below heading */
-  font-size: 1.5em;
+  margin: 0 0 2rem 0; /* Increased space */
+  font-size: 1.75rem; /* Larger heading */
+  font-weight: 500;
 }
 
 .report-form {
   display: flex;
   flex-direction: column;
-  gap: 20px; /* Space between form rows */
+  gap: 1.5rem; /* Adjusted gap */
 }
 
 .form-row {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-}
-
-.full-width {
-  flex: 1;
-}
-
-.only-closed-checkbox {
-  margin-top: -16px; /* Align with the top of the form fields */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
 }
 
 .filter-box {
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 16px;
+  padding: 1.5rem;
   background: #18191a;
 }
 
 .filter-title {
-  font-weight: 500; /* Less aggressive font weight */
+  font-weight: 500;
   color: #a4a4a4;
-  margin-bottom: 10px;
+  margin-bottom: 1rem;
 }
 
-.filter-box textarea {
+table {
   width: 100%;
-  height: 120px; /* Slightly smaller height */
-  background: transparent;
-  border: none;
-  color: #ddd;
-  resize: vertical;
-  outline: none;
-  font-family: inherit;
-  font-size: 1em;
+  border-collapse: separate;
+  border-spacing: 0;
 }
+
+th, td {
+  text-align: left;
+  padding: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+thead th {
+  font-weight: 600; /* Bolder headers */
+  color: #fff;
+  background-color: #18191a;
+}
+
+tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.05); /* Lighter on hover */
+}
+
+
 
 .actions {
-  margin-top: 10px;
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .btn-primary {
   background-color: #98bf23;
   color: #0b0b0b;
-  padding: 12px 14px; /* Taller button */
-  border-radius: 12px; /* Match card radius */
+  padding: 12px 24px;
+  border-radius: 12px;
   border: none;
   cursor: pointer;
-  font-weight: 700; /* Bolder text */
-  width: 100%; /* Full width */
+  font-weight: 700;
   font-size: 1em;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .btn-primary:hover {
-  background-color: #a9d034; /* Lighter on hover */
+  background-color: #a9d034;
+  transform: translateY(-2px); /* Subtle lift on hover */
+}
+
+.btn-primary:disabled {
+  background-color: #444;
+  color: #888;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* PDF-like report preview styling */
+#report-preview {
+  position: relative;
+  padding: 2cm; /* Typical print margins */
+  background-color: #ffffff; /* White paper background */
+  color: #000000; /* Black text on white background */
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 4px; /* Subtle rounding for the preview container */
+  font-family: 'Times New Roman', serif; /* A more formal font */
+  line-height: 1.5;
+  margin-top: 2rem;
+}
+
+.report-logo {
+  position: absolute;
+  top: 1cm;
+  left: 1cm;
+  width: 300px; /* Increased width */
+  height: auto;
+  opacity: 0.7; /* Slightly faded logo */
+}
+
+#report-preview h2 {
+  text-align: center;
+  font-size: 24pt; /* Larger title for PDF */
+  font-weight: bold;
+  margin-top: 1.5cm; /* Space for logo and top margin */
+  margin-bottom: 1cm;
+  color: #333; /* Darker heading color */
+}
+
+#report-preview h3 {
+  font-size: 14pt;
+  font-weight: bold;
+  margin-top: 0.8cm;
+  margin-bottom: 0.3cm;
+  border-bottom: 1px solid #ccc; /* Subtle line */
+  padding-bottom: 0.1cm;
+  color: #555; /* Slightly lighter heading color */
+}
+
+#report-preview p, #report-preview li {
+  font-size: 11pt;
+  margin-bottom: 0.1cm;
+  color: #333;
+}
+
+#report-preview ul {
+  list-style-type: disc;
+  margin-left: 1cm;
+  padding-left: 0.2cm;
+}
+
+/* Table styling within report-preview */
+#report-preview .report-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5cm;
+  font-size: 10pt;
+}
+
+#report-preview .report-table th,
+#report-preview .report-table td {
+  border: 1px solid #ccc;
+  padding: 0.2cm 0.4cm;
+  text-align: left;
+  color: #333;
+}
+
+#report-preview .report-table thead th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+  color: #333;
+}
+
+#report-preview .report-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9; /* Zebra striping */
+}
+
+#report-preview .report-table tbody tr:hover {
+  background-color: #e6e6e6; /* Light hover for readability */
 }
 
 /* --- Angular Material Override --- */
