@@ -51,6 +51,27 @@
   gap: 1.5rem;
 }
 
+.filter-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.filter-row mat-form-field {
+  flex: 1; /* Allow date pickers to grow */
+}
+
+.filter-row .checkbox-container {
+  display: flex;
+  align-items: center;
+  height: 56px; /* Match material form field height */
+  margin-top: -1.34375em; /* Align with form field label */
+}
+
+.filter-row mat-checkbox {
+  flex-shrink: 0; /* Prevent checkbox from shrinking */
+}
+
 .filter-box {
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -260,7 +281,14 @@ tbody tr:hover {
   border-color: #d0d0d0 !important;
 }
 
+.instance-elements-group {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
 
-
-
-
+.instance-elements-group h4 {
+    margin-bottom: 0.5rem;
+    color: #e0e0e0;
+    font-size: 1.1rem;
+}

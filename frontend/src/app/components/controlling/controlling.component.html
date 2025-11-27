@@ -11,20 +11,24 @@
 
         <div class="report-form">
 
-          <div class="form-row">
+          <div class="form-row filter-row">
             <mat-form-field appearance="outline">
               <mat-label>Start Date</mat-label>
-              <input matInput [matDatepicker]="startPicker" [ngModel]="startDate()" (ngModelChange)="startDate.set($event)" (dateChange)="onDateChange()">
+              <input matInput [matDatepicker]="startPicker" [ngModel]="startDate()" (ngModelChange)="startDate.set($event)" (dateChange)="onFilterChange()">
               <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
               <mat-datepicker #startPicker></mat-datepicker>
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>End Date</mat-label>
-              <input matInput [matDatepicker]="endPicker" [matDatepickerFilter]="endDateFilter" [ngModel]="endDate()" (ngModelChange)="endDate.set($event)" (dateChange)="onDateChange()">
+              <input matInput [matDatepicker]="endPicker" [matDatepickerFilter]="endDateFilter" [ngModel]="endDate()" (ngModelChange)="endDate.set($event)" (dateChange)="onFilterChange()">
               <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
               <mat-datepicker #endPicker></mat-datepicker>
             </mat-form-field>
+
+            <div class="checkbox-container">
+              <mat-checkbox [ngModel]="onlyClosedBoards()" (ngModelChange)="onlyClosedBoards.set($event); onFilterChange()">Only closed boards</mat-checkbox>
+            </div>
           </div>
 
           <div class="form-row">
@@ -39,7 +43,7 @@
 
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Instance</mat-label>
-              <mat-select [ngModel]="selectedInstances()" (ngModelChange)="selectedInstances.set($event)" [disabled]="!selectedBoard()" (selectionChange)="onInstanceSelectionChange()" multiple>
+              <mat-select [ngModel]="selectedInstances()" (ngModelChange)="selectedInstances.set($event)" [disabled]="!selectedBoard()" multiple>
                 @for (instance of filteredInstances(); track instance.id) {
                   <mat-option [value]="instance">{{instance.name}}</mat-option>
                 }
@@ -51,29 +55,37 @@
           @if (selectedInstances().length > 0) {
             <div class="filter-box">
               <div class="filter-title">Instance Elements</div>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Select</th>
-                    <th>Name</th>
-                    <th>Type</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @for (element of selectedInstanceElements(); track element.id) {
-                    <tr>
-                      <td>
-                        <mat-checkbox 
-                          [checked]="checkedElements().has(element.id!)" 
-                          (change)="toggleElementSelection(element.id!)">
-                        </mat-checkbox>
-                      </td>
-                      <td>{{ getElementName(element) }}</td>
-                      <td>{{ getElementType(element) }}</td>
-                    </tr>
-                  }
-                </tbody>
-              </table>
+
+              @for (instance of selectedFullInstances(); track instance.id) {
+                <div class="instance-elements-group">
+                  <h4>Instance: {{ instance.name }}</h4>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Select</th>
+                        <th>Name</th>
+                        <th>Type</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (element of selectedInstanceElements(); track element.id) {
+                        @if (element.instanceId === instance.id) {
+                          <tr>
+                            <td>
+                              <mat-checkbox 
+                                [checked]="checkedElements().has(element.id!)" 
+                                (change)="toggleElementSelection(element.id!)">
+                              </mat-checkbox>
+                            </td>
+                            <td>{{ getElementName(element) }}</td>
+                            <td>{{ getElementType(element) }}</td>
+                          </tr>
+                        }
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              }
             </div>
           }
 
@@ -94,7 +106,7 @@
 
         <h3>General Information</h3>
         <p><strong>Date Range:</strong> {{ startDate()?.toLocaleDateString('de-DE') || 'N/A' }} - {{ endDate()?.toLocaleDateString('de-DE') || 'N/A' }}</p>
-        <p><strong>Board:</strong> {{ selectedBoard()?.name || 'N/A' }}</p>
+        <p><strong>Board:</strong> {{ selectedBoard()?.name}}</p>
         <p><strong>Instance(s):</strong> 
           @for (instance of selectedInstances(); track instance.id) {
             {{ instance.name }}{{ !$last ? ', ' : '' }}
@@ -103,15 +115,15 @@
           }
         </p>
         <p><strong>Entry Phase Start:</strong> 
-          @for (instance of selectedInstances(); track instance.id) {
-            {{ instance.entryPhaseStart ? (instance.entryPhaseStart | date:'short':'':'de-DE') : 'N/A' }}{{ !$last ? ', ' : '' }}
+          @for (instance of selectedFullInstances(); track instance.id) {
+            {{ instance.entryPhaseStart |date: 'dd.MM.yyyy'}}{{ !$last ? ', ' : '' }}
           } @empty {
             N/A
           }
         </p>
         <p><strong>Entry Phase End:</strong> 
-          @for (instance of selectedInstances(); track instance.id) {
-            {{ instance.entryPhaseEnd ? (instance.entryPhaseEnd | date:'short':'':'de-DE') : 'N/A' }}{{ !$last ? ', ' : '' }}
+          @for (instance of selectedFullInstances(); track instance.id) {
+            {{ instance.entryPhaseEnd |date: 'dd.MM.yyyy'}}{{ !$last ? ', ' : '' }}
           } @empty {
             N/A
           }
@@ -119,30 +131,30 @@
 
         <h3>Selected Elements</h3>
         <ul>
-          @for (element of getSelectedElements(); track element.id) {
+          @for (element of selectedElements(); track element.id) {
             <li>{{ getElementName(element) }} ({{ getElementType(element) }})</li>
           } @empty {
             <li>No elements selected.</li>
           }
         </ul>
 
-        @if (selectedBoard() && selectedBoard()!.instances && selectedInstances().length > 0) {
+        @if (selectedBoard() && selectedBoard()!.instances && selectedFullInstances().length > 0) {
           <h3>Board Overview</h3>
-          @for (instance of selectedInstances(); track instance.id) {
+          @for (instance of selectedFullInstances(); track instance.id) {
             <h4>Instance: {{ instance.name }}</h4>
             <table class="report-table">
               <thead>
                 <tr>
                   <th>Row Position</th>
                   @for (col of instance.columns; track col.id) {
-                    <th>{{ col.name || 'N/A' }}</th>
+                    <th>{{ col.name }}</th>
                   }
                 </tr>
               </thead>
               <tbody>
                 @for (row of instance.rows; track row.id) {
                   <tr>
-                    <td>{{ row.position?.toString() || 'N/A' }}</td>
+                    <td>{{ row.position?.toString() }}</td>
                     @for (column of instance.columns; track column.id; let colIndex = $index) {
                       <td>{{ getCellValue(row.cells?.[colIndex]) }}</td>
                     }

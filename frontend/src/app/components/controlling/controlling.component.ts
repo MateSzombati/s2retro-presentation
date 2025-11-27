@@ -7,6 +7,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+// Import DTOs and services from the generated Swagger client
 import { BoardReadDto, BoardService, InstanceReadDto, InstanceColumnReadDto, InstanceRowReadDto, InstanceCellReadDto, InstanceService } from '../../swagger';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -29,35 +30,48 @@ import { forkJoin } from 'rxjs';
   templateUrl: './controlling.component.html',
   styleUrls: ['./controlling.component.css'],
   providers: [
-    provideNativeDateAdapter(),
-    { provide: MAT_DATE_LOCALE, useValue: 'de-DE' }
+    provideNativeDateAdapter(), // Provides date adapter for Material Datepicker
+    { provide: MAT_DATE_LOCALE, useValue: 'de-DE' } // Sets date locale to German
   ]
 })
 export class ControllingComponent implements OnInit {
+  // Inject services for data interaction
   private boardService = inject(BoardService);
   private instanceService = inject(InstanceService);
 
-  // Data properties
+  // Stores all boards fetched from the API
   private allBoards = signal<BoardReadDto[]>([]);
   
-  // State properties
+  // --- State Properties (User selections and UI state) ---
   startDate = signal<Date | null>(null);
   endDate = signal<Date | null>(null);
+  onlyClosedBoards = signal<boolean>(false);
   selectedBoard = signal<BoardReadDto | null>(null);
-  selectedInstances = signal<InstanceReadDto[]>([]); // Changed to signal array
+  selectedInstances = signal<InstanceReadDto[]>([]);
+  selectedFullInstances = signal<InstanceReadDto[]>([]);
   checkedElements = signal<Set<string>>(new Set());
   
-  // View-bound properties
+  // Filters boards based on date range and 'onlyClosedBoards' checkbox
   filteredBoards = computed(() => {
     const start = this.startDate();
     const end = this.endDate();
+    const onlyClosed = this.onlyClosedBoards();
+
+    let boards = this.allBoards();
+
+    // Filter by archived status if checkbox is checked
+    if (onlyClosed) {
+      boards = boards.filter(board => board.instances?.some(instance => instance.isArchived));
+    }
+
+    // Filter by date range if start and end dates are set
     if (start && end) {
       if (start > end) {
         this.endDate.set(new Date(start.getTime()));
       }
       const startTime = start.getTime();
       const endTime = end.getTime();
-      return this.allBoards().filter(board =>
+      boards = boards.filter(board =>
         board.instances?.some(instance => {
           if (instance.entryPhaseStart) {
             const instanceDate = new Date(instance.entryPhaseStart).getTime();
@@ -67,14 +81,15 @@ export class ControllingComponent implements OnInit {
         })
       );
     }
-    return this.allBoards();
+    return boards;
   });
 
+  // Filters instances based on the currently selected board
   filteredInstances = computed(() => {
     const board = this.selectedBoard();
     if (board && board.instances) {
       return [...board.instances];
-    }
+    } 
     return [];
   });
 
@@ -82,30 +97,35 @@ export class ControllingComponent implements OnInit {
   showPreview = signal<boolean>(false);
 
   constructor() {
+    // Effect to reset selections if the current board becomes invalid due to filters
     effect(() => {
-      // Logic to reset selected instances if selected board is no longer valid
       if (this.selectedBoard() && !this.filteredBoards().find(b => b.id === this.selectedBoard()?.id)) {
         this.selectedBoard.set(null);
         this.selectedInstances.set([]);
+        this.selectedFullInstances.set([]);
         this.checkedElements.set(new Set());
         this.showPreview.set(false);
       }
     });
 
+    // Effect to fetch full instance details when selectedInstances changes
     effect(() => {
-      // Fetch full instance details for all selected instances when selection changes
       const currentSelectedInstances = this.selectedInstances();
-      this.selectedInstanceElements.set([]); // Clear previous elements
-      this.checkedElements.set(new Set()); // Clear previous checked elements
+      this.selectedInstanceElements.set([]);
+      this.selectedFullInstances.set([]);
+      this.checkedElements.set(new Set());
       this.showPreview.set(currentSelectedInstances.length > 0); // Show preview if instances are selected
 
       if (currentSelectedInstances.length > 0) {
+        // Create observables to fetch full details for each selected instance
         const fetchObservables = currentSelectedInstances.map(instance =>
           this.instanceService.apiInstanceIdGet(instance.id!)
         );
 
+        // Fetch all instance details in parallel
         forkJoin(fetchObservables).subscribe({
           next: (fullInstances: InstanceReadDto[]) => {
+            this.selectedFullInstances.set(fullInstances); // Update with full instance data
             const allElements: (InstanceColumnReadDto | InstanceRowReadDto)[] = [];
             fullInstances.forEach(fullInstance => {
               if (fullInstance?.columns) {
@@ -115,11 +135,12 @@ export class ControllingComponent implements OnInit {
                 allElements.push(...fullInstance.rows);
               }
             });
-            this.selectedInstanceElements.set(allElements);
+            this.selectedInstanceElements.set(allElements); // Populate all elements for selection
           },
           error: (error) => {
             console.error('Error fetching full instance details:', error);
             this.selectedInstanceElements.set([]);
+            this.selectedFullInstances.set([]);
             this.showPreview.set(false); // Hide preview on error
           }
         });
@@ -128,30 +149,31 @@ export class ControllingComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // Fetch all boards when the component initializes
     this.boardService.apiBoardGet().subscribe(boards => {
       this.allBoards.set(boards);
     });
   }
 
-  onDateChange(): void {
-    // FilteredBoards computed property handles this
-    this.selectedBoard.set(null);
+  // Resets all selections and preview when any filter (date, closed boards) changes
+  onFilterChange(): void {
+    this.restInstanceSelections();
+  }
+
+  // Resets instance-related selections when the selected board changes
+  onBoardSelectionChange(): void {
+    this.restInstanceSelections();
+  }
+
+  restInstanceSelections(): void{
     this.selectedInstances.set([]);
+    this.selectedFullInstances.set([]);
+    this.selectedInstanceElements.set([]);
     this.checkedElements.set(new Set());
     this.showPreview.set(false);
   }
 
-  onBoardSelectionChange(): void {
-    this.selectedInstances.set([]); // Reset instance selection
-    this.selectedInstanceElements.set([]); // Clear elements
-    this.checkedElements.set(new Set()); // Clear checked elements
-    this.showPreview.set(false);
-  }
-
-  onInstanceSelectionChange(): void {
-    // Effect handles fetching and preview state
-  }
-
+  // Toggles the selection state of an element (column or row) for reporting
   toggleElementSelection(elementId: string): void {
     this.checkedElements.update(elements => {
       const newElements = new Set(elements);
@@ -164,19 +186,27 @@ export class ControllingComponent implements OnInit {
     });
   }
 
+  // Determines if an element is a 'Column' or 'Row'
   getElementType(element: InstanceColumnReadDto | InstanceRowReadDto): string {
     return (element as InstanceColumnReadDto).type !== undefined ? 'Column' : 'Row';
   }
 
+  // Provides a display name for an element (column or row)
   getElementName(element: InstanceColumnReadDto | InstanceRowReadDto): string {
-    return (element as any).name || 'Row';
+    if ((element as InstanceColumnReadDto).type !== undefined) {
+      return (element as InstanceColumnReadDto).name || 'Unnamed Column';
+    } else {
+      return `Row ${(element as InstanceRowReadDto).position}`;
+    }
   }
 
-  getSelectedElements() {
+  // Computed signal to get only the elements that are checked for the report
+  selectedElements = computed(() => {
     const checked = this.checkedElements();
     return this.selectedInstanceElements().filter(element => checked.has(element.id!));
-  }
+  });
 
+  // Retrieves the display value for a cell, handling different data types
   getCellValue(cell: InstanceCellReadDto | undefined | null): string {
     if (!cell) return '';
     if (cell.textValue !== undefined && cell.textValue !== null) return cell.textValue;
@@ -186,11 +216,13 @@ export class ControllingComponent implements OnInit {
     return '';
   }
 
+  // Date filter function for the end date picker, ensuring it's not before the start date
   endDateFilter = (d: Date | null): boolean => {
     const startDate = this.startDate();
     return startDate ? (d || new Date()) >= startDate : true;
   };
 
+  // Generates a PDF report from the HTML content of the report preview
   generateReport() {
     const reportElement = document.getElementById('report-preview');
     if (reportElement) {
