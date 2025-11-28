@@ -118,9 +118,6 @@ export class RestrictedPageComponent implements OnInit, OnDestroy {
   }
 
   // === Board Management ===
-  addBoard(): void {
-    this.router.navigate(['/createboard']);
-  }
 
   get openBoards(): number {
     return this.boards.filter((b) => b.status !== 'Completed').length;
