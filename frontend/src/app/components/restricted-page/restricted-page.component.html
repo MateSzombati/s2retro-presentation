@@ -1,18 +1,18 @@
 <div class="overview-container">
-  <h1>Good morning, {{userName}}</h1>
+  <h1>Good morning, {{userName()}}</h1>
 
   <!-- Top Summary -->
   <div class="summary-cards">
     <div class="card">
-      <span class="number green">{{openBoards}}</span>
+      <span class="number green">{{openBoards()}}</span>
       <span>Open Boards</span>
     </div>
     <div class="card">
-      <span class="number purple">{{todayMeetings}}</span>
+      <span class="number purple">{{todayMeetings()}}</span>
       <span>Meetings Today</span>
     </div>
     <div class="card">
-      <span class="number red">{{adminChanges}}</span>
+      <span class="number red">{{adminChanges()}}</span>
       <span>Admin changes</span>
     </div>
   </div>
@@ -25,7 +25,7 @@
         <h2>Your Boards</h2>
       </div>
       <ul>
-          @for (item of boards; track item) {
+          @for (item of boards(); track item) {
             <li>
               <span>{{ item.name }}</span>
               <small>{{ item.status }}</small>
@@ -40,16 +40,16 @@
     <div class="panel">
       <div class="panel-header">
         <h2>Next Meetings</h2>
-        @if (loadingMeetings) {
+        @if (loadingMeetings()) {
           <small>Loading…</small>
         }
       </div>
 
-      @if (!loadingMeetings && meetings.length === 0) {
+      @if (!loadingMeetings() && meetings().length === 0) {
         <ul><li>No upcoming meetings found.</li></ul>
       } @else {
         <ul>
-          @for (ev of meetings; track ev.id) {
+          @for (ev of meetings(); track ev.id) {
             <li class="meeting-item">
               <div class="meeting-title">{{ ev.subject || 'No Subject' }}</div>
               <div class="meeting-time">{{ formatTime(ev.start.dateTime) }}</div>
@@ -72,7 +72,7 @@
     <div class="panel">
       <h2>Notifications</h2>
       <ul>
-        @for (n of notifications; track n.id) {
+        @for (n of notifications(); track n.id) {
           <li>
             <span>{{ stripHtml(n.lastMessagePreview?.body?.content ?? '') || 'New Message' }}</span>
             <small>{{ n.lastMessagePreview?.from?.user?.displayName || 'Unknown' }}</small>

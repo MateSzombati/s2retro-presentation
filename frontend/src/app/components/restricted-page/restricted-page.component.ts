@@ -1,12 +1,14 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MsalService } from '@azure/msal-angular';
-import { interval, switchMap, catchError, of, firstValueFrom, Subject, takeUntil } from 'rxjs';
+import { interval, switchMap, catchError, of, firstValueFrom, Subject } from 'rxjs';
 import { UserInfoService } from '../../services/user-info.service';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { ChartComponent } from '../chart/chart.component';
+
 
 // ==== Models / Types ====
 interface Board {
@@ -51,10 +53,9 @@ type GraphChat = {
   templateUrl: './restricted-page.component.html',
   styleUrls: ['./restricted-page.component.css'],
 })
-export class RestrictedPageComponent implements OnInit, OnDestroy {
+export class RestrictedPageComponent implements OnInit {
   private http = inject(HttpClient);
   private userInfoService = inject(UserInfoService);
-  private readonly _destroying$ = new Subject<void>();
 
   constructor(
     private msal: MsalService,
@@ -63,25 +64,28 @@ export class RestrictedPageComponent implements OnInit, OnDestroy {
   ) {}
 
   // === State ===
-  userName: string = 'User';
-  boards: Board[] = [
+  private userClaimsSignal = toSignal(this.userInfoService.currentUserInfo$);
+  userName = computed(() => {
+    const claims = this.userClaimsSignal();
+    const nameClaim = claims?.claims?.find(c => c.type === 'name');
+    return nameClaim?.value ?? 'User';
+  });
+  boards = signal<Board[]>([
     { name: 'Board 1', status: 'Completed' },
     { name: 'Board 2', status: 'Meeting Phase' },
     { name: 'Board 3', status: 'Entry Phase' },
-  ];
+  ]);
 
-  meetings: GraphEvent[] = [];
-  notifications: GraphChat[] = [];
+  meetings = signal<GraphEvent[]>([]);
+  notifications = signal<GraphChat[]>([]);
 
-  todayMeetings = 0;
-  adminChanges = 0;
-  loadingMeetings = false;
-  loadingNotifications = false;
+  todayMeetings = signal(0);
+  adminChanges = signal(0);
+  loadingMeetings = signal(false);
+  loadingNotifications = signal(false);
 
   // === Lifecycle ===
   ngOnInit(): void {
-    this.subscribeToUserInfo();
-
     this.ensureActiveAccount();
     Promise.all([
       this.loadUpcomingMeetings(),
@@ -90,22 +94,6 @@ export class RestrictedPageComponent implements OnInit, OnDestroy {
     this.startNotificationsPolling();
   }
 
-  ngOnDestroy(): void {
-    this._destroying$.next(undefined);
-    this._destroying$.complete();
-  }
-
-  private subscribeToUserInfo(): void {
-    this.userInfoService.currentUserInfo$
-      .pipe(takeUntil(this._destroying$))
-      .subscribe(userClaims => {
-        if (userClaims && userClaims.claims) {
-          const nameClaim = userClaims.claims.find(c => c.type === 'name');
-          console.log(nameClaim);
-          this.userName = nameClaim?.value ?? 'unknown';
-        }
-      });
-  }
 
   // === Auth Helpers ===
   private ensureActiveAccount(): void {
@@ -119,13 +107,11 @@ export class RestrictedPageComponent implements OnInit, OnDestroy {
 
   // === Board Management ===
 
-  get openBoards(): number {
-    return this.boards.filter((b) => b.status !== 'Completed').length;
-  }
+  openBoards = computed(() => this.boards().filter((b) => b.status !== 'Completed').length);
 
   // === Graph API: Meetings ===
   private async loadUpcomingMeetings(): Promise<void> {
-    this.loadingMeetings = true;
+    this.loadingMeetings.set(true);
     try {
       const account = this.msal.instance.getActiveAccount();
       if (!account) return;
@@ -154,17 +140,17 @@ export class RestrictedPageComponent implements OnInit, OnDestroy {
       const res = await firstValueFrom(
         this.http.get<{ value: GraphEvent[] }>(url, { headers })
       );
-      this.meetings = res?.value ?? [];
+      this.meetings.set(res?.value ?? []);
 
       // Meetings Heute zählen
       const todayYMD = this.toYMD(new Date(), 'Europe/Vienna');
-      this.todayMeetings = this.meetings.filter(
+      this.todayMeetings.set(this.meetings().filter(
         (ev) => this.toYMD(new Date(ev.start.dateTime), 'Europe/Vienna') === todayYMD
-      ).length;
+      ).length);
     } catch (err) {
       console.error('Failed to load meetings', err);
     } finally {
-      this.loadingMeetings = false;
+      this.loadingMeetings.set(false);
     }
   }
 
@@ -186,7 +172,7 @@ export class RestrictedPageComponent implements OnInit, OnDestroy {
 
   // === Graph API: Notifications ===
   private async loadNotifications(): Promise<void> {
-    this.loadingNotifications = true;
+    this.loadingNotifications.set(true);
     try {
       const account = this.msal.instance.getActiveAccount();
       if (!account) return;
@@ -203,11 +189,11 @@ export class RestrictedPageComponent implements OnInit, OnDestroy {
       const res = await firstValueFrom(
         this.http.get<{ value: GraphChat[] }>(url, { headers })
       );
-      this.notifications = res?.value ?? [];
+      this.notifications.set(res?.value ?? []);
     } catch (err) {
       console.error('Failed to load notifications', err);
     } finally {
-      this.loadingNotifications = false;
+      this.loadingNotifications.set(false);
     }
   }
 
@@ -240,10 +226,10 @@ export class RestrictedPageComponent implements OnInit, OnDestroy {
           )
         )
       ).subscribe(res => {
-        this.notifications = (res.value ?? []).filter(chat =>
+        this.notifications.set((res.value ?? []).filter(chat =>
           chat.lastMessagePreview?.from?.user?.id &&
           chat.lastMessagePreview.from.user.id !== account.localAccountId
-        );
+        ));
       });
 
     }).catch(err => {
