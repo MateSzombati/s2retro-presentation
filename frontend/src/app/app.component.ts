@@ -55,7 +55,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   getUserInfoFromBackend(): void {
     // The MsalInterceptor attaches the token automatically.
-    this.http.get<UserClaims>(`${environment.apiUrl}/api/Authentication`).subscribe({
+    this.http.get<UserClaims>(`${environment.apiRoot}/api/Authentication`).subscribe({
       next: (info) => {
         // Store the fetched info in the shared service
         this.userInfoService.setUserInfo(info);

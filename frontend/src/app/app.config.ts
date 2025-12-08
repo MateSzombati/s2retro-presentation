@@ -25,6 +25,7 @@ import {
 
 import { routes } from './app.routes';
 import { environment } from '../environments/environment';
+import { BASE_PATH, provideApi } from './swagger';
 
 /**
  * Creates the MSAL PublicClientApplication instance.
@@ -87,7 +88,7 @@ export function MSALInterceptorConfigFactory() {
   // Maps the backend API URL to the required scope.
   // Any HTTP request to environment.apiUrl will have an access token for 'access_as_user' scope attached.
   protectedResourceMap.set(
-    environment.apiUrl,
+    environment.apiRoot,
     ['api://e5f836ee-dd93-4bd1-b36c-61235078e367/access_as_user']
   );
 
@@ -105,6 +106,8 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideAnimations(),
+    provideApi(environment.apiRoot),
+    provideHttpClient(),
     // Provides HttpClient and enables interceptors for dependency injection.
     provideHttpClient(withInterceptorsFromDi()),
     {

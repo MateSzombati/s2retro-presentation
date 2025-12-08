@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal, computed } from '@angular/core';
+import { Component, OnInit, inject, signal, computed, effect } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -8,16 +8,10 @@ import { interval, switchMap, catchError, of, firstValueFrom, Subject } from 'rx
 import { UserInfoService } from '../../services/user-info.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ChartComponent } from '../chart/chart.component';
+import { BoardReadDto, BoardService, InstancePhase } from 'src/app/swagger';
 
 
 // ==== Models / Types ====
-interface Board {
-  name: string;
-  status: string;
-  start?: Date;
-  end?: Date;
-  participants?: { name: string; email: string; role: string }[];
-}
 
 type GraphEvent = {
   id: string;
@@ -56,11 +50,10 @@ type GraphChat = {
 export class RestrictedPageComponent implements OnInit {
   private http = inject(HttpClient);
   private userInfoService = inject(UserInfoService);
+  private boardService = inject(BoardService);
 
   constructor(
     private msal: MsalService,
-    private router: Router,
-    private dialog: MatDialog
   ) {}
 
   // === State ===
@@ -70,11 +63,16 @@ export class RestrictedPageComponent implements OnInit {
     const nameClaim = claims?.claims?.find(c => c.type === 'name');
     return nameClaim?.value ?? 'User';
   });
-  boards = signal<Board[]>([
-    { name: 'Board 1', status: 'Completed' },
-    { name: 'Board 2', status: 'Meeting Phase' },
-    { name: 'Board 3', status: 'Entry Phase' },
-  ]);
+
+  boards = signal<BoardReadDto[]>([]);
+
+  _ = effect(() => {
+
+    this.boardService.apiBoardGet().subscribe({
+      next: b => this.boards.set(b),
+      error: err => console.error('Failed to load boards:', err)
+    });
+  })
 
   meetings = signal<GraphEvent[]>([]);
   notifications = signal<GraphChat[]>([]);
@@ -107,7 +105,30 @@ export class RestrictedPageComponent implements OnInit {
 
   // === Board Management ===
 
-  openBoards = computed(() => this.boards().filter((b) => b.status !== 'Completed').length);
+  openBoards = computed(() => {
+    return this.boards().filter(board =>
+      board.instances && board.instances.some(instance => !instance.isArchived)
+    ).length;
+  });
+
+  getActiveInstancePhase(board: BoardReadDto): string {
+    const activeInstance = board.instances?.find(inst => !inst.isArchived);
+
+    if (!activeInstance) {
+      return 'Archived';
+    }
+
+    switch (activeInstance.phase) {
+      case InstancePhase.NUMBER_0:
+        return 'Entry phase';
+      case InstancePhase.NUMBER_1:
+        return 'Meeting phase';
+      case InstancePhase.NUMBER_2:
+        return 'Final phase';
+      default:
+        return 'Unknown';
+    }
+  }
 
   // === Graph API: Meetings ===
   private async loadUpcomingMeetings(): Promise<void> {

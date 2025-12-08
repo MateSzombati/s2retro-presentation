@@ -28,7 +28,7 @@
           @for (item of boards(); track item) {
             <li>
               <span>{{ item.name }}</span>
-              <small>{{ item.status }}</small>
+              <small>{{ getActiveInstancePhase(item) }}</small>
             </li>
           } @empty {
           <span>There are no items.</span>
