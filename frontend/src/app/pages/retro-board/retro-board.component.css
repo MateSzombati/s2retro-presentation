@@ -33,6 +33,11 @@ html, body {
   color: #131616;
   text-align: center;
   align-content: center;
+  background: linear-gradient(
+      to right,
+      #98BF23 0%,
+      #99c41a 100%
+    );
 }
 
 .phase-container {
@@ -51,11 +56,19 @@ html, body {
 }
 
 .entry {
-  background-color: #2A4726;
   color: #C3FFBC;
+  background: linear-gradient(
+    to left,
+    #2e4f2a 0%,
+    #4c8546 100%
+  );
 }
 .entry:hover {
-  background-color: #355b30;
+  background: linear-gradient(
+    to left,
+    #30532c 0%,
+    #518e4a 100%
+  );
 }
 
 .meeting {
@@ -76,7 +89,6 @@ html, body {
 
 .layout-container {
   padding: 8px 8px;
-  background-color: #2F6D68;
   color: #E3FEFF;
   display: flex;
   flex-direction: row;
@@ -86,10 +98,19 @@ html, body {
   border-radius: 100px;
   height: 6px;
   margin-left: 20px;
+  background: linear-gradient(
+    to left,
+    #29615c 0%,
+    #46908a 100%
+  );
 }
 .layout-container:hover {
-  background-color: #357c75;
   cursor: default;
+  background: linear-gradient(
+    to left,
+    #32746f 0%,
+    #56bcb4 100%
+  );
 }
 
 .main-container {
