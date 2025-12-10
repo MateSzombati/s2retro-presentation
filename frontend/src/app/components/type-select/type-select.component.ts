@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, forwardRef, ElementRef, ViewChild, OnInit, OnDestroy, TemplateRef, ViewContainerRef } from '@angular/core';
+import { Component, forwardRef, ElementRef, ViewChild, OnInit, OnDestroy, TemplateRef, ViewContainerRef, EventEmitter, Output } from '@angular/core';
 import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -33,6 +33,8 @@ export class TypeSelectComponent implements OnInit, OnDestroy, ControlValueAcces
 
   @ViewChild('dropdownContainer', { read: ElementRef }) dropdownContainer!: ElementRef;
   @ViewChild('dropdownTemplate') dropdownTemplate!: TemplateRef<any>;
+
+  @Output() onTypeEdited = new EventEmitter<void>();
 
   private overlayRef: OverlayRef | null = null;
   private currentValue: any = null;
@@ -187,6 +189,8 @@ export class TypeSelectComponent implements OnInit, OnDestroy, ControlValueAcces
 
     this.onTouched();
     this.closeDropdown();
+
+    this.onTypeEdited.emit();
   }
 
   openDialog(): void {

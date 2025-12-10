@@ -362,6 +362,14 @@ th {
     transform: scale(0.95);
 }
 
+.del-layout-btn.disabled-btn {
+  cursor: not-allowed;
+  background-color: transparent !important;
+  color: #454545 !important;
+}
+
+
+
 
 .add-col-btn {
   // border: 1px solid #4c4c4c;
@@ -392,8 +400,8 @@ th {
 }
 .add-col-btn:disabled {
     background-color: transparent;
-    cursor: default;
-    color: #424242;
+    cursor: not-allowed;
+    color: #454545;
 }
 
 
@@ -435,7 +443,8 @@ th {
   // border: 1px solid #AC1138;
   border: none;
   background-color: transparent;
-  color: #db7531;
+  // color: #db7531;
+  color: #396c9e;
   font: Inter;
   font-size: 12px;
   font-weight: 600;
@@ -450,11 +459,18 @@ th {
   transition: all 0.2s ease;
 }
 .restore-layout-btn:hover {
-    background-color: #c6641a47;
+    // background-color: #c6641a47;
+    background-color: #396c9e2d;
     cursor: pointer;
 }
 .restore-layout-btn:active {
-    background-color: #c67b1a35;
+    // background-color: #c67b1a35;
+    background-color: #396c9e34;
     cursor: pointer;
     transform: scale(0.95);
+}
+.restore-layout-btn.disabled-btn {
+  cursor: not-allowed;
+  background-color: transparent !important;
+  color: #454545 !important;
 }

@@ -36,9 +36,12 @@ export class AddEditBoardlayoutComponent {
 
   @Input() layoutColumns: ColumnReadDto[] = [];
 
-  @Output() onColumnDelete = new EventEmitter<number>();
+  @Output() onColumnDelete = new EventEmitter<ColumnReadDto[]>();
 
-  columnToDelete: ColumnReadDto | null = null;
+  @Output() onEdited = new EventEmitter<void>();
+
+  columnsToDelete: ColumnReadDto[] = [];
+
 
   constructor(
     private layoutService: LayoutService,
@@ -66,6 +69,14 @@ export class AddEditBoardlayoutComponent {
     ],
   };
 
+  onEditedLayout() {
+    this.onEdited.emit();
+  }
+
+  onNameChange() {
+    this.onEditedLayout();
+  }
+
   onAddColumn() {
     const newColumn: ColumnReadDto = {
       name: "New Column",
@@ -75,14 +86,22 @@ export class AddEditBoardlayoutComponent {
   }
 
   onDeleteColumn(index: number) {
-    this.columnToDelete = this.layoutColumns[index];
-    this.layoutColumns.splice(index, 1);
-    this.onColumnDelete.emit(this.layoutColumns.length);
+    const removedColumn = this.layoutColumns[index];
 
-    this.layoutColumns.forEach((col, index) => {
-      col.position = index;
-    });
+    // Store every deleted column
+    if (removedColumn?.id) {
+      this.columnsToDelete.push(removedColumn);
+    }
+
+    this.layoutColumns.splice(index, 1);
+
+    this.layoutColumns.forEach((col, i) => col.position = i);
+    
+    this.onColumnDelete.emit(this.layoutColumns);
+
+    this.onEditedLayout();
   }
+
 
 
   // columnHeights: number[] = [];
@@ -138,6 +157,7 @@ export class AddEditBoardlayoutComponent {
     });
 
     this.layoutColumns.sort((a, b) => a.position! - b.position!);
+    this.onEditedLayout();
   }
 
   disableDrag() {

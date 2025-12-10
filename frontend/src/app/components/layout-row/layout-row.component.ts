@@ -4,10 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { AddEditBoardlayoutComponent } from '../add-edit-boardlayout/add-edit-boardlayout.component';
 import { TypeSelectComponent } from '../type-select/type-select.component';
 import { BoardlayoutComponent } from "../../pages/boardlayout/boardlayout.component";
-import { ColumnService, LayoutReadDto, LayoutService } from '../../swagger';
+import { ColumnReadDto, ColumnService, LayoutReadDto, LayoutService } from '../../swagger';
 import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 import { AlertDialogData } from '../../models/models';
 import { MatDialog } from '@angular/material/dialog';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-layout-row',
@@ -25,6 +26,10 @@ export class LayoutRowComponent {
 
   @Output() onLayoutSave = new EventEmitter<void>();
 
+  isEdited = false;
+
+  uneditedLayout: LayoutReadDto = {};
+
   maxColumns = 8;
   columnsCounter = this.rowData.columns?.length;
   addColumnDisabled = false;
@@ -40,6 +45,7 @@ export class LayoutRowComponent {
   ngOnInit() {
     this.columnsCounter = this.rowData.columns?.length;
     this.checkIfColumnLimit();
+    this.uneditedLayout = this.rowData;
   }
   
   isExpanded = false;
@@ -49,15 +55,21 @@ export class LayoutRowComponent {
     event.stopPropagation();
   }
 
+  onEditedLayout() {
+    this.isEdited = true;
+  }
+
   onAddColumnClick() {
     this.columnsCounter = this.columnsCounter!+1;
     this.child.onAddColumn();
     this.checkIfColumnLimit();
   }
 
-  onDeleteColumn(value: number) {
-    this.columnsCounter = value;
+  onDeleteColumn(value: ColumnReadDto[]) {
+    this.columnsCounter = value.length;
+    this.rowData.columns = value;
     this.checkIfColumnLimit();
+    console.log(this.child.layoutColumns);
   }
 
   restoreLayout() {
@@ -69,9 +81,11 @@ export class LayoutRowComponent {
         panelClass: 'custom-dialog',
         data: {
           title: 'Restore Layout?',
-          message: 'Are you sure you want to restore ' + this.rowData.name + '?',
+          message: 'Are you sure you want to restore ' + this.uneditedLayout.name + '?',
           okText: 'Restore',
-          cancelText: 'Cancel'
+          cancelText: 'Cancel',
+          okColor: '#1c65adff',
+          okHoverColor: '#1976d2',
         }
       }
     );
@@ -79,7 +93,7 @@ export class LayoutRowComponent {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.rowData.isArchived = false;
-        this.layoutService.apiLayoutPut(this.rowData).subscribe({
+        this.layoutService.apiLayoutPut(this.uneditedLayout).subscribe({
               next: (x) => {
                 this.onLayoutSave.emit();
               },
@@ -98,16 +112,27 @@ export class LayoutRowComponent {
     this.layoutService.apiLayoutPut(this.rowData).subscribe({
       next: (x) => {
 
-        if(this.child.columnToDelete !== null) {
-          this.columnService.apiColumnIdDelete(this.child.columnToDelete.id!).subscribe({
-            next: (x) => {
+        const deletes = this.child.columnsToDelete;
+
+        if (deletes.length > 0) {
+
+          forkJoin(
+            deletes.map(col =>
+              this.columnService.apiColumnIdDelete(col.id!)
+            )
+          ).subscribe({
+            next: () => {
               this.onLayoutSave.emit();
+              this.child.columnsToDelete = []; // clear deleted list
+              this.isEdited = false;
             },
-            error: (err) => console.error(err)
+            error: err => console.error(err)
           });
-        }else{
+
+        } else {
           this.onLayoutSave.emit();
         }
+
 
       },
       error: (err) => console.error(err)
@@ -130,34 +155,37 @@ export class LayoutRowComponent {
   }
 
   openDeleteDialog() {
-  const dialogRef = this.dialog.open<AlertDialogComponent, AlertDialogData, boolean>(
-    AlertDialogComponent,
-    {
-      width: '300px',
-      backdropClass: 'custom-dialog-backdrop',
-      panelClass: 'custom-dialog',
-      data: {
-        title: 'Archive Layout?',
-        message: 'Are you sure you want to archive ' + this.rowData.name + '?',
-        okText: 'Archive',
-        cancelText: 'Cancel'
+    console.log(this.uneditedLayout);
+    const dialogRef = this.dialog.open<AlertDialogComponent, AlertDialogData, boolean>(
+      AlertDialogComponent,
+      {
+        width: '300px',
+        backdropClass: 'custom-dialog-backdrop',
+        panelClass: 'custom-dialog',
+        data: {
+          title: 'Archive Layout?',
+          message: 'Are you sure you want to archive ' + this.uneditedLayout.name + '?',
+          okText: 'Archive',
+          cancelText: 'Cancel',
+          okColor: '#bc133eff',
+          okHoverColor: '#d21645ff', 
+        }
       }
-    }
-  );
+    );
 
-  dialogRef.afterClosed().subscribe(result => {
-    if (result) {
-      this.rowData.isArchived = true;
-      this.layoutService.apiLayoutPut(this.rowData).subscribe({
-            next: (x) => {
-              this.onLayoutSave.emit();
-            },
-            error: (err) => console.error(err)
-          });
-    } else {
-      
-    }
-  });
-}
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.rowData.isArchived = true;
+        this.layoutService.apiLayoutPut(this.uneditedLayout).subscribe({
+              next: (x) => {
+                this.onLayoutSave.emit();
+              },
+              error: (err) => console.error(err)
+            });
+      } else {
+        
+      }
+    });
+  }
 
 }
