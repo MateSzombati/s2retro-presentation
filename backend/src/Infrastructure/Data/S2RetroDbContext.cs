@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+﻿namespace S2Retro.Infrastructure.Data;
+
+internal class S2RetroDbContext
+{
+=======
 ﻿using Microsoft.EntityFrameworkCore;
 using S2Retro.Modules.RetroBoardLayout.Domain.Entities;
 
@@ -32,4 +38,5 @@ public class S2RetroDbContext(DbContextOptions<S2RetroDbContext> options) : DbCo
             .HasForeignKey(v => v.CategoryId)
             .OnDelete(DeleteBehavior.Cascade);
     }
+>>>>>>> main
 }

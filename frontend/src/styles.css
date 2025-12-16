@@ -1,7 +1,95 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
-html, body { height: 100%; }
-body { 
-  margin: 0; 
-  font-family: Roboto, "Helvetica Neue", sans-serif; 
-  background-color: #18191a;
+
+body {
+  background-color: #18191A;
+  font-family: Inter, sans-serif;
+  color: white;
+  padding: 0px;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+
+  scrollbar-width: thin;
+  scrollbar-color: #3b3b3b #13141599;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  height: 3px;
+  width: 1px;
+}
+
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track {
+  background: #131616;
+}
+
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb {
+  background-color: #3a3a3a;
+  border-radius: 1px;
+  border: 1px solid #131616;
+}
+
+h1 {
+  font-size: 23px;
+}
+
+h2 {
+  font-size: 17px;
+}
+
+/* Default (sidebar expanded) */
+.sidebar {
+  width: 210px;
+  transition: width 0.3s ease;
+}
+
+.main-content {
+  padding-left: 210px;
+  transition: padding-left 0.3s ease;
+}
+
+/* Collapsed state */
+.sidebar-collapsed .sidebar {
+  width: 60px;
+}
+
+.sidebar-collapsed .main-content {
+  padding-left: 60px;
+}
+
+
+
+
+
+
+
+
+/* Calendar background */
+.mat-datepicker-content .mat-calendar,
+.mat-calendar {
+  background: #242424 !important;
+  color: white !important;
+  border-radius: 15px;
+}
+
+/* Numbers */
+.mat-calendar-body-cell-content {
+  color: #c6c6c6 !important;
+}
+
+/* Selected number */
+.mat-calendar-body-selected {
+  background-color: #98BF23 !important;
+  color: #121212 !important;
+}
+
+/* Hovered number */
+.mat-calendar-body-cell:hover .mat-calendar-body-cell-content {
+  background-color: #46464688 !important;
+  color: #c6c6c6 !important;
 }
