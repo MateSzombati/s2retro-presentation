@@ -1,0 +1,6 @@
+.content {
+  margin-left: 210px;
+  padding: 20px;
+  min-height: 100vh; /* Ensure it takes at least the full height */
+  box-sizing: border-box; /* Keep for correct padding calculation with vh units */
+}
