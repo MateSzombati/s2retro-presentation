@@ -1,14 +1,15 @@
 {
-"$schema": "./node_modules/@openapitools/openapi-generator-cli/config.schema.json",
-"spaces": 2,
-"generator-cli": {
-"version": "7.14.0",
-"generators": {
-"angular": {
-"generatorName": "typescript-angular",
-"output": "./src/app/swagger",
-"inputSpec": "http://localhost:8080/swagger/v1/swagger.json"
-}
-}
-}
+  "$schema": "./node_modules/@openapitools/openapi-generator-cli/config.schema.json",
+  "spaces": 2,
+  "generator-cli": {
+    "version": "7.16.0",
+    "generators": {
+      "angular": {
+        "generatorName": "typescript-angular",
+        "output": "./src/app/swagger",
+        "inputSpec": "http://localhost:8080/swagger/v1/swagger.json"
+      }
+    }
+  }
+
 }

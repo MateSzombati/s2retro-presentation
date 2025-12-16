@@ -1,0 +1,294 @@
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+:host {
+  display: block;
+  padding: 2rem;
+  background-color: #18191a;
+}
+
+.controlling-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #fff;
+  margin-bottom: 2rem; /* Increased space */
+}
+
+.title h1 {
+  font-size: 2.25rem; /* Larger title */
+  font-weight: 600;
+}
+
+.card {
+  color: #fff;
+  background-color: #1E1F21;
+  border-radius: 16px;
+  padding: 2rem; /* Consistent padding */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.card h2 {
+  color: #fff;
+  margin: 0 0 2rem 0; /* Increased space */
+  font-size: 1.75rem; /* Larger heading */
+  font-weight: 500;
+}
+
+.report-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* Adjusted gap */
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.filter-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.filter-row mat-form-field {
+  flex: 1; /* Allow date pickers to grow */
+}
+
+.filter-row .checkbox-container {
+  display: flex;
+  align-items: center;
+  height: 56px; /* Match material form field height */
+  margin-top: -1.34375em; /* Align with form field label */
+}
+
+.filter-row mat-checkbox {
+  flex-shrink: 0; /* Prevent checkbox from shrinking */
+}
+
+.filter-box {
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1.5rem;
+  background: #18191a;
+}
+
+.filter-title {
+  font-weight: 500;
+  color: #a4a4a4;
+  margin-bottom: 1rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+th, td {
+  text-align: left;
+  padding: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+thead th {
+  font-weight: 600; /* Bolder headers */
+  color: #fff;
+  background-color: #18191a;
+}
+
+tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.05); /* Lighter on hover */
+}
+
+
+
+.actions {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-primary {
+  background-color: #98bf23;
+  color: #0b0b0b;
+  padding: 12px 24px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1em;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.btn-primary:hover {
+  background-color: #a9d034;
+  transform: translateY(-2px); /* Subtle lift on hover */
+}
+
+.btn-primary:disabled {
+  background-color: #444;
+  color: #888;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* PDF-like report preview styling */
+#report-preview {
+  position: relative;
+  padding: 2cm; /* Typical print margins */
+  background-color: #ffffff; /* White paper background */
+  color: #000000; /* Black text on white background */
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 4px; /* Subtle rounding for the preview container */
+  font-family: 'Times New Roman', serif; /* A more formal font */
+  line-height: 1.5;
+  margin-top: 2rem;
+}
+
+.report-logo {
+  position: absolute;
+  top: 1cm;
+  left: 1cm;
+  width: 300px; /* Increased width */
+  height: auto;
+  opacity: 0.7; /* Slightly faded logo */
+}
+
+#report-preview h2 {
+  text-align: center;
+  font-size: 24pt; /* Larger title for PDF */
+  font-weight: bold;
+  margin-top: 1.5cm; /* Space for logo and top margin */
+  margin-bottom: 1cm;
+  color: #333; /* Darker heading color */
+}
+
+#report-preview h3 {
+  font-size: 14pt;
+  font-weight: bold;
+  margin-top: 0.8cm;
+  margin-bottom: 0.3cm;
+  border-bottom: 1px solid #ccc; /* Subtle line */
+  padding-bottom: 0.1cm;
+  color: #555; /* Slightly lighter heading color */
+}
+
+#report-preview p, #report-preview li {
+  font-size: 11pt;
+  margin-bottom: 0.1cm;
+  color: #333;
+}
+
+#report-preview ul {
+  list-style-type: disc;
+  margin-left: 1cm;
+  padding-left: 0.2cm;
+}
+
+/* Table styling within report-preview */
+#report-preview .report-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5cm;
+  font-size: 10pt;
+}
+
+#report-preview .report-table th,
+#report-preview .report-table td {
+  border: 1px solid #ccc;
+  padding: 0.2cm 0.4cm;
+  text-align: left;
+  color: #333;
+}
+
+#report-preview .report-table thead th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+  color: #333;
+}
+
+#report-preview .report-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9; /* Zebra striping */
+}
+
+#report-preview .report-table tbody tr:hover {
+  background-color: #e6e6e6; /* Light hover for readability */
+}
+
+/* --- Angular Material Override --- */
+
+/* Input-Text */
+::ng-deep .mat-mdc-text-field-wrapper input.mat-mdc-input-element {
+  color: #e0e0e0 !important;
+}
+
+/* Label (Placeholder / mat-label) */
+::ng-deep .mat-mdc-text-field-wrapper .mdc-floating-label {
+  color: #a4a4a4 !important;
+}
+
+/* Icon-Buttons (Datepicker Toggle) */
+::ng-deep .mat-mdc-form-field-icon-suffix button.mat-icon-button {
+  color: #a4a4a4 !important;
+}
+
+/* Combobox Label */
+::ng-deep .mat-mdc-form-field .mdc-floating-label {
+  color: #a4a4a4 !important;
+}
+
+/* Combobox Selected Text */
+::ng-deep .mat-mdc-select-value {
+  color: #e0e0e0 !important;
+}
+
+/* Combobox Dropdown Icon */
+::ng-deep .mat-mdc-select-arrow {
+  color: #a4a4a4 !important;
+}
+
+/* Checkbox Label */
+::ng-deep .mat-mdc-checkbox .mdc-label {
+  color: #b0b0b0 !important;
+}
+
+/* Checkbox Border */
+::ng-deep .mat-mdc-checkbox .mdc-checkbox__background {
+  border-color: #b0b0b0 !important;
+}
+
+/* Checkbox Background when selected */
+::ng-deep .mat-mdc-checkbox.mdc-checkbox--selected .mdc-checkbox__background {
+  background-color: #b0b0b0db !important;
+  border-color: #b0b0b0db !important;
+}
+
+/* Checkbox Checkmark */
+::ng-deep .mat-mdc-checkbox.mdc-checkbox--selected .mdc-checkbox__checkmark {
+  color: black !important;
+}
+
+/* Checkbox Hover Effect */
+::ng-deep .mat-mdc-checkbox:hover .mdc-checkbox__background {
+  border-color: #d0d0d0 !important;
+}
+
+.instance-elements-group {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.instance-elements-group h4 {
+    margin-bottom: 0.5rem;
+    color: #e0e0e0;
+    font-size: 1.1rem;
+}

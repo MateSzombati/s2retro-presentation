@@ -1,6 +1,9 @@
-// app.config.ts
-// This file configures the Angular application, including routing, HTTP client, and Microsoft Authentication Library (MSAL) setup.
-// It defines how MSAL interacts with Azure Active Directory (AAD) for authentication and token acquisition.
+import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { provideRouter } from '@angular/router';
+import { routes } from './app.routes';
+import { provideHttpClient } from '@angular/common/http';
+import { provideApi,} from './swagger';
+import { environment } from '../environments/environment.development';
 
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
@@ -108,6 +111,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     provideApi(environment.apiRoot),
     provideHttpClient(),
+    provideZoneChangeDetection({ eventCoalescing: true }),
     // Provides HttpClient and enables interceptors for dependency injection.
     provideHttpClient(withInterceptorsFromDi()),
     {
@@ -134,4 +138,7 @@ export const appConfig: ApplicationConfig = {
     MsalGuard, // Route guard for authentication.
     MsalBroadcastService, // Service for listening to MSAL events.
   ],
+    
+  
+  
 };
